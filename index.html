@@ -532,16 +532,18 @@ nav.scrolled {
   pointer-events: none;
 }
 
-/* click ripple */
-@keyframes ripple-out { to { transform: scale(4); opacity: 0; } }
-.btn-ripple {
-  position: absolute; border-radius: 50%;
-  background: rgba(255,255,255,0.28);
-  width: 56px; height: 56px;
-  top: 0; left: 0;
-  transform: scale(0);
-  animation: ripple-out 0.55s ease-out forwards;
+/* raindrop burst on click */
+@keyframes drop-fly {
+  0%   { transform: translate(-50%,-50%) scale(1) rotate(0deg); opacity: 0.95; }
+  60%  { opacity: 0.7; }
+  100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.15) rotate(var(--rot)); opacity: 0; }
+}
+.raindrop {
+  position: absolute;
+  left: 50%; top: 50%;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
   pointer-events: none;
+  animation: drop-fly var(--dur, 0.6s) var(--delay, 0s) cubic-bezier(0.22,1,0.36,1) forwards;
 }
 
 /* spinning vinyl cover */
@@ -1200,15 +1202,32 @@ function setPlayingState(playing){
   playerCard.classList.toggle('is-playing', playing);
 }
 
-function addRipple(){
-  const r=document.createElement('span');
-  r.className='btn-ripple';
-  playBtn.appendChild(r);
-  r.addEventListener('animationend',()=>r.remove());
+function spawnRaindrops(){
+  const colors=['rgba(184,150,212,0.95)','rgba(122,64,176,0.9)','rgba(160,110,210,0.88)','rgba(255,255,255,0.8)','rgba(200,170,230,0.85)'];
+  const count=14;
+  for(let i=0;i<count;i++){
+    const drop=document.createElement('span');
+    drop.className='raindrop';
+    // evenly spread around the clock, slight random jitter
+    const angle=(i/count)*360+(Math.random()-0.5)*22;
+    const rad=angle*Math.PI/180;
+    const dist=30+Math.random()*36;
+    drop.style.setProperty('--tx',(Math.cos(rad)*dist)+'px');
+    // gravity bias: drops fall slightly more downward
+    drop.style.setProperty('--ty',(Math.sin(rad)*dist+16)+'px');
+    drop.style.setProperty('--rot',(Math.random()*400-200)+'deg');
+    drop.style.setProperty('--dur',(0.42+Math.random()*0.28)+'s');
+    drop.style.setProperty('--delay',(i*0.018)+'s');
+    drop.style.background=colors[i%colors.length];
+    drop.style.width =(4+Math.random()*5)+'px';
+    drop.style.height=(7+Math.random()*7)+'px';
+    playBtn.appendChild(drop);
+    drop.addEventListener('animationend',()=>drop.remove(),{once:true});
+  }
 }
 
 playBtn.addEventListener('click',function(){
-  addRipple();
+  spawnRaindrops();
   togglePlay();
 });
 
