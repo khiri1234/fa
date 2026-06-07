@@ -595,6 +595,36 @@ nav.scrolled {
 /* card glow when playing */
 .player-card.is-playing { box-shadow: 0 8px 60px rgba(122,64,176,0.14); }
 
+/* ── SNOW LAYER ── */
+.snow-layer {
+  position: absolute; inset: 0;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+/* keep card content above snow */
+.player-card > *:not(.snow-layer) { position: relative; z-index: 1; }
+
+@keyframes flake-fall {
+  0%   { top: -8px;  opacity: 0; }
+  8%   { opacity: var(--op, 0.75); }
+  92%  { opacity: var(--op, 0.75); }
+  100% { top: 108%; opacity: 0; }
+}
+@keyframes flake-drift {
+  0%, 100% { margin-left: 0; }
+  50%       { margin-left: var(--dr, 6px); }
+}
+.flake {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, #fff 0%, rgba(210,185,255,0.55) 60%, rgba(180,140,240,0.2) 100%);
+  animation:
+    flake-fall var(--dur, 3s) linear forwards,
+    flake-drift var(--ddur, 2s) ease-in-out infinite;
+}
+
 /* ── GALLERY ── */
 .gallery-section { background: var(--bg); }
 
@@ -1044,6 +1074,7 @@ footer::before {
       <p style="margin-top:14px;">A handpicked moment from Tavalodet Mobarak — a Persian birthday classic that captures everything this day feels like.</p>
     </div>
     <div class="player-card reveal" style="transition-delay:0.15s">
+      <div class="snow-layer" id="snowLayer"></div>
       <div class="player-cover-row">
         <div class="cover-wrap">
           <div class="player-cover">
@@ -1443,6 +1474,33 @@ window.addEventListener('load',()=>{
 });
 
 // ── CONFETTI ──
+// ── SNOW ──
+(function(){
+  const layer = document.getElementById('snowLayer');
+  function spawnFlake(){
+    const f = document.createElement('div');
+    f.className = 'flake';
+    const sz = 1.5 + Math.random() * 3.8;
+    f.style.width  = sz + 'px';
+    f.style.height = sz + 'px';
+    f.style.left   = (Math.random() * 96) + '%';
+    f.style.setProperty('--op',   (0.4  + Math.random() * 0.45).toFixed(2));
+    f.style.setProperty('--dur',  (1.6  + Math.random() * 2.6) + 's');
+    f.style.setProperty('--ddur', (1.0  + Math.random() * 1.6) + 's');
+    f.style.setProperty('--dr',   ((Math.random() - 0.5) * 16) + 'px');
+    // stagger drift start so flakes don't all sway in sync
+    f.style.animationDelay = '0s, ' + (Math.random() * 2).toFixed(2) + 's';
+    layer.appendChild(f);
+    f.addEventListener('animationend', function(e){
+      if(e.animationName === 'flake-fall') f.remove();
+    });
+  }
+  // pre-populate so card doesn't start bare
+  for(let i = 0; i < 10; i++) setTimeout(spawnFlake, i * 180);
+  // continuous stream
+  setInterval(spawnFlake, 230);
+})();
+
 function burst(){
   const cols=['#b896d4','#d4a85a','#f0dce8','#ffffff','#d4b8f0','#f0d08a'];
   for(let i=0;i<70;i++){
