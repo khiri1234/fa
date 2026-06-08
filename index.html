@@ -1514,7 +1514,7 @@ window.addEventListener('load',()=>{
 // ── SNOW ──
 (function(){
   const layer = document.getElementById('snowLayer');
-  const glyphs = ['❄','❅','❆'];
+  const glyphs = ['❄'];
   function spawnFlake(){
     const f = document.createElement('span');
     f.className = 'flake';
@@ -1522,9 +1522,9 @@ window.addEventListener('load',()=>{
     f.style.left  = (Math.random() * 94) + '%';
     f.style.setProperty('--sz',   (8  + Math.random() * 10) + 'px');
     f.style.setProperty('--op',   (0.45 + Math.random() * 0.45).toFixed(2));
-    f.style.setProperty('--dur',  (1.8  + Math.random() * 2.6) + 's');
-    f.style.setProperty('--ddur', (1.0  + Math.random() * 1.6) + 's');
-    f.style.setProperty('--sdur', (2.5  + Math.random() * 4)   + 's');
+    f.style.setProperty('--dur',  (4.5  + Math.random() * 5) + 's');
+    f.style.setProperty('--ddur', (2.5  + Math.random() * 3) + 's');
+    f.style.setProperty('--sdur', (6    + Math.random() * 8) + 's');
     f.style.setProperty('--dr',   ((Math.random() - 0.5) * 16) + 'px');
     f.style.animationDelay = '0s, ' + (Math.random()*2).toFixed(2) + 's, ' + (Math.random()*2).toFixed(2) + 's';
     layer.appendChild(f);
