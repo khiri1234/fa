@@ -615,13 +615,18 @@ nav.scrolled {
 }
 .flake {
   position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle at 32% 28%, rgba(220,190,255,0.95) 0%, rgba(154,80,220,0.75) 45%, rgba(100,30,180,0.35) 100%);
-  box-shadow: 0 0 4px rgba(160,80,240,0.4);
+  font-size: var(--sz, 14px);
+  line-height: 1;
+  color: rgba(180,100,255,0.85);
+  text-shadow: 0 0 6px rgba(160,70,240,0.55);
+  user-select: none;
+  pointer-events: none;
   animation:
     flake-fall var(--dur, 3s) linear forwards,
-    flake-drift var(--ddur, 2s) ease-in-out infinite;
+    flake-drift var(--ddur, 2s) ease-in-out infinite,
+    flake-spin var(--sdur, 4s) linear infinite;
 }
+@keyframes flake-spin { to { transform: rotate(360deg); } }
 
 /* ── GALLERY ── */
 .gallery-section { background: var(--bg); }
@@ -1509,19 +1514,19 @@ window.addEventListener('load',()=>{
 // ── SNOW ──
 (function(){
   const layer = document.getElementById('snowLayer');
+  const glyphs = ['❄','❅','❆'];
   function spawnFlake(){
-    const f = document.createElement('div');
+    const f = document.createElement('span');
     f.className = 'flake';
-    const sz = 1.5 + Math.random() * 3.8;
-    f.style.width  = sz + 'px';
-    f.style.height = sz + 'px';
-    f.style.left   = (Math.random() * 96) + '%';
-    f.style.setProperty('--op',   (0.4  + Math.random() * 0.45).toFixed(2));
-    f.style.setProperty('--dur',  (1.6  + Math.random() * 2.6) + 's');
+    f.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+    f.style.left  = (Math.random() * 94) + '%';
+    f.style.setProperty('--sz',   (8  + Math.random() * 10) + 'px');
+    f.style.setProperty('--op',   (0.45 + Math.random() * 0.45).toFixed(2));
+    f.style.setProperty('--dur',  (1.8  + Math.random() * 2.6) + 's');
     f.style.setProperty('--ddur', (1.0  + Math.random() * 1.6) + 's');
+    f.style.setProperty('--sdur', (2.5  + Math.random() * 4)   + 's');
     f.style.setProperty('--dr',   ((Math.random() - 0.5) * 16) + 'px');
-    // stagger drift start so flakes don't all sway in sync
-    f.style.animationDelay = '0s, ' + (Math.random() * 2).toFixed(2) + 's';
+    f.style.animationDelay = '0s, ' + (Math.random()*2).toFixed(2) + 's, ' + (Math.random()*2).toFixed(2) + 's';
     layer.appendChild(f);
     f.addEventListener('animationend', function(e){
       if(e.animationName === 'flake-fall') f.remove();
