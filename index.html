@@ -617,8 +617,9 @@ nav.scrolled {
   position: absolute;
   font-size: var(--sz, 14px);
   line-height: 1;
-  color: rgba(180,100,255,0.85);
-  text-shadow: 0 0 6px rgba(160,70,240,0.55);
+  color: #a040e8;
+  -webkit-text-fill-color: #a040e8;
+  text-shadow: 0 0 8px rgba(160,40,240,0.7);
   user-select: none;
   pointer-events: none;
   animation:
@@ -1514,7 +1515,7 @@ window.addEventListener('load',()=>{
 // ── SNOW ──
 (function(){
   const layer = document.getElementById('snowLayer');
-  const glyphs = ['❅','❆'];
+  const glyphs = ['❅︎','❆︎']; // ︎ forces text rendering so CSS color applies
   function spawnFlake(){
     const f = document.createElement('span');
     f.className = 'flake';
