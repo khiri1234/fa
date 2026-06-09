@@ -1009,6 +1009,48 @@ footer::before {
   .scroll-ind span { font-size: 0.78rem; }
 }
 
+/* ── global purple water-drop click / tap effect ── */
+.wdrop {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99999;
+  width: var(--ws, 22px);
+  height: var(--ws, 22px);
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: radial-gradient(
+    circle at 33% 28%,
+    rgba(255,255,255,0.95) 0%,
+    rgba(215,175,255,0.88) 18%,
+    rgba(155,85,230,0.68) 52%,
+    rgba(90,20,180,0.22) 100%
+  );
+  box-shadow:
+    inset -2px -2px 5px rgba(60,0,130,0.22),
+    0 3px 14px rgba(140,55,230,0.38);
+  animation: wdrop-splash var(--wd, 0.65s) cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes wdrop-splash {
+  0%   { transform: translate(-50%,-50%) scale(0);    opacity: 1; }
+  35%  { transform: translate(-50%,-50%) scale(1.18); opacity: 1; }
+  68%  { transform: translate(-50%,-50%) scale(0.88); opacity: 0.85; }
+  100% { transform: translate(-50%,-50%) scale(0.08) scaleY(0.04); opacity: 0; }
+}
+.wdrop-ring {
+  position: fixed;
+  pointer-events: none;
+  z-index: 99997;
+  width: var(--rs, 22px);
+  height: var(--rs, 22px);
+  border-radius: 50%;
+  border: 2px solid rgba(178, 108, 255, 0.72);
+  transform: translate(-50%,-50%) scale(0.3);
+  animation: wdrop-ring var(--rd, 0.85s) var(--rdelay, 0s) ease-out forwards;
+}
+@keyframes wdrop-ring {
+  0%   { transform: translate(-50%,-50%) scale(0.3); opacity: 0.88; border-width: 2px; }
+  100% { transform: translate(-50%,-50%) scale(4.2); opacity: 0;    border-width: 0.5px; }
+}
 </style>
 </head>
 <body>
@@ -1553,6 +1595,36 @@ function burst(){
     },i*35);
   }
 }
+
+// ── global purple water-drop click / tap effect ──
+(function(){
+  function spawnDrop(x, y){
+    const sz = 18 + Math.random() * 14;
+    const drop = document.createElement('span');
+    drop.className = 'wdrop';
+    drop.style.left = x + 'px';
+    drop.style.top  = y + 'px';
+    drop.style.setProperty('--ws', sz + 'px');
+    drop.style.setProperty('--wd', (0.52 + Math.random() * 0.18) + 's');
+    document.body.appendChild(drop);
+    drop.addEventListener('animationend', () => drop.remove());
+    for (let i = 0; i < 2; i++) {
+      const ring = document.createElement('span');
+      ring.className = 'wdrop-ring';
+      ring.style.left = x + 'px';
+      ring.style.top  = y + 'px';
+      ring.style.setProperty('--rs',     sz + 'px');
+      ring.style.setProperty('--rd',     (0.72 + i * 0.18) + 's');
+      ring.style.setProperty('--rdelay', (i * 0.13) + 's');
+      document.body.appendChild(ring);
+      ring.addEventListener('animationend', () => ring.remove());
+    }
+  }
+  document.addEventListener('click', e => spawnDrop(e.clientX, e.clientY));
+  document.addEventListener('touchstart', e => {
+    for (const t of e.changedTouches) spawnDrop(t.clientX, t.clientY);
+  }, { passive: true });
+})();
 </script>
 
 <!-- Unmute hint -->
