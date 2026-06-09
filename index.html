@@ -1009,24 +1009,6 @@ footer::before {
   .scroll-ind span { font-size: 0.78rem; }
 }
 
-/* ── selenophile moon click effect ── */
-.moon-click {
-  position: fixed;
-  pointer-events: none;
-  z-index: 99999;
-  font-size: var(--msz, 22px);
-  line-height: 1;
-  user-select: none;
-  transform: translate(-50%, -50%);
-  animation: moon-rise var(--mdur, 1.4s) cubic-bezier(0.22, 1, 0.36, 1) forwards;
-  filter: drop-shadow(0 0 6px rgba(200, 160, 255, 0.8));
-}
-@keyframes moon-rise {
-  0%   { opacity: 1; transform: translate(-50%, -50%) scale(0.3) rotate(-20deg); }
-  30%  { opacity: 1; transform: translate(-50%, calc(-50% - 18px)) scale(1.15) rotate(8deg); }
-  60%  { opacity: 0.85; }
-  100% { opacity: 0; transform: translate(calc(-50% + var(--mx, 0px)), calc(-50% - 70px)) scale(0.7) rotate(25deg); }
-}
 </style>
 </head>
 <body>
@@ -1557,33 +1539,7 @@ window.addEventListener('load',()=>{
   setInterval(spawnFlake, 1840);
 })();
 
-// ── selenophile moon click / tap effect ──
-(function(){
-  const MOONS = ['🌙','🌛','🌜','☽','✦'];
-  const WEIGHTS= [6,   3,   3,   3,  1];
-  const TOTAL  = WEIGHTS.reduce((a,b)=>a+b,0);
-  function pickMoon(){
-    let r = Math.random()*TOTAL;
-    for(let i=0;i<MOONS.length;i++){ r-=WEIGHTS[i]; if(r<=0) return MOONS[i]; }
-    return MOONS[0];
-  }
-  function spawnMoon(x, y){
-    const el = document.createElement('span');
-    el.className = 'moon-click';
-    el.textContent = pickMoon();
-    el.style.left = x + 'px';
-    el.style.top  = y + 'px';
-    el.style.setProperty('--msz',  (18 + Math.random()*16) + 'px');
-    el.style.setProperty('--mdur', (1.1 + Math.random()*0.7) + 's');
-    el.style.setProperty('--mx',   ((Math.random()-0.5)*40) + 'px');
-    document.body.appendChild(el);
-    el.addEventListener('animationend', ()=>el.remove());
-  }
-  document.addEventListener('click', e => spawnMoon(e.clientX, e.clientY));
-  document.addEventListener('touchstart', e => {
-    for(const t of e.changedTouches) spawnMoon(t.clientX, t.clientY);
-  }, {passive:true});
-})();
+
 
 function burst(){
   const cols=['#b896d4','#d4a85a','#f0dce8','#ffffff','#d4b8f0','#f0d08a'];
