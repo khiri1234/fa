@@ -1142,6 +1142,8 @@ nav{direction:ltr!important;}
         <button class="lang-option" data-lang="ru" onclick="setLang('ru');closeLangMenu()" title="Русский">🇷🇺</button>
         <button class="lang-option" data-lang="ar" onclick="setLang('ar');closeLangMenu()" title="العربية">🇸🇦</button>
         <button class="lang-option" data-lang="zh" onclick="setLang('zh');closeLangMenu()" title="中文">🇨🇳</button>
+        <button class="lang-option" data-lang="es" onclick="setLang('es');closeLangMenu()" title="Español">🇪🇸</button>
+        <button class="lang-option" data-lang="fr" onclick="setLang('fr');closeLangMenu()" title="Français">🇫🇷</button>
       </div>
     </div>
   </div>
@@ -1808,6 +1810,56 @@ const TRANSLATIONS = {
     featEyebrow:'第二十四章',
     featH2:'她的<em>世界</em>',
     footerCopy:'用爱制作 · 生日快乐 ✨'
+  },
+  es: {
+    navGallery:'Galería', navStory:'Historia', navMusic:'Música',
+    heroEyebrow:'¡Feliz Cumpleaños!',
+    heroH1:'Para el alma más<br><em>radiante</em>',
+    heroDesc:'Cada momento contigo es un recuerdo que guardaré para siempre. Eres gracia, belleza y luz — todo en una persona extraordinaria.',
+    btnGallery:'Ver Galería', btnMusic:'Escuchar Nuestra Canción',
+    badge1T:'Cumpleañera', badge1S:'Capítulo 24',
+    badge2T:'¡Feliz Cumpleaños!', badge2S:'mi amor ♥️',
+    scroll:'Desplazar',
+    musicEyebrow:'Una Canción Especial',
+    musicH2:'Nuestra<br><em style="font-style:italic;color:var(--lav);">Melodía</em>',
+    musicDesc:'Un momento especial de Tavalodet Mobarak — el clásico persa de cumpleaños que captura todo lo que siente este día.',
+    galEyebrow:'Recuerdos y Momentos',
+    galH2:'Su <em>Hermoso</em> Mundo',
+    fAll:'Todo', fBday:'Cumpleaños', fTravel:'Viajes', fPortraits:'Retratos',
+    storyEyebrow:'Una Carta',
+    storyQuote:'"Haces que cada momento ordinario parezca arrancado de un sueño."',
+    storyP1:'Te he visto pararte con tranquila confianza en la Gran Mezquita, reír bajo los copos de nieve de Moscú, y sostener ese pastel del "24" como si fuera el comienzo de todo — porque lo fue.',
+    storyP2:'Llevas ciudades enteras dentro de tus ojos. Eres la Mona Lisa y el jardín de los milagros y el horizonte, todo a la vez. Y de algún modo, increíblemente, eres mía.',
+    storyP3:'Feliz cumpleaños, amor. Cada año contigo es un privilegio.',
+    storySig:'Con todo mi amor ♥️',
+    featEyebrow:'Capítulo Veinticuatro',
+    featH2:'Su <em>Mundo</em>',
+    footerCopy:'Hecho con amor · ¡Feliz Cumpleaños! ✨'
+  },
+  fr: {
+    navGallery:'Galerie', navStory:'Histoire', navMusic:'Musique',
+    heroEyebrow:'Joyeux Anniversaire',
+    heroH1:'À l\'âme la plus<br><em>rayonnante</em>',
+    heroDesc:'Chaque instant avec toi est un souvenir que je chérirai à jamais. Tu es grâce, beauté et lumière — tout cela réuni en une personne extraordinaire.',
+    btnGallery:'Voir la Galerie', btnMusic:'Écouter Notre Chanson',
+    badge1T:'Fille d\'Anniversaire', badge1S:'Chapitre 24',
+    badge2T:'Joyeux Anniversaire', badge2S:'mon amour ♥️',
+    scroll:'Défiler',
+    musicEyebrow:'Une Chanson Spéciale',
+    musicH2:'Notre<br><em style="font-style:italic;color:var(--lav);">Mélodie</em>',
+    musicDesc:'Un moment soigneusement choisi de Tavalodet Mobarak — le classique persan d\'anniversaire qui capture tout ce que cette journée inspire.',
+    galEyebrow:'Souvenirs et Moments',
+    galH2:'Son <em>Beau</em> Monde',
+    fAll:'Tout', fBday:'Anniversaire', fTravel:'Voyages', fPortraits:'Portraits',
+    storyEyebrow:'Une Lettre',
+    storyQuote:'"Tu rends chaque moment ordinaire comme arraché d\'un rêve."',
+    storyP1:'Je t\'ai vue te tenir avec une douce assurance à la Grande Mosquée, rire sous les flocons de neige moscovites, et tenir ce gâteau « 24 » comme si c\'était le début de tout — parce que c\'était le cas.',
+    storyP2:'Tu portes des villes entières dans tes yeux. Tu es la Joconde et le jardin des merveilles et la skyline, tout à la fois. Et d\'une façon incroyable, tu es à moi.',
+    storyP3:'Joyeux anniversaire, mon amour. Chaque année avec toi est un privilège.',
+    storySig:'Avec tout mon amour ♥️',
+    featEyebrow:'Chapitre Vingt-Quatre',
+    featH2:'Son <em>Monde</em>',
+    footerCopy:'Fait avec amour · Joyeux Anniversaire ✨'
   }
 };
 
@@ -1856,7 +1908,7 @@ function setLang(lang) {
   set('footerCopy', t.footerCopy);
 
   // update dropdown label & active state
-  const META = { en:{flag:'🇬🇧',label:'English'}, fa:{flag:'🇮🇷',label:'فارسی'}, ru:{flag:'🇷🇺',label:'Русский'}, ar:{flag:'🇸🇦',label:'العربية'}, zh:{flag:'🇨🇳',label:'中文'} };
+  const META = { en:{flag:'🇬🇧',label:'English'}, fa:{flag:'🇮🇷',label:'فارسی'}, ru:{flag:'🇷🇺',label:'Русский'}, ar:{flag:'🇸🇦',label:'العربية'}, zh:{flag:'🇨🇳',label:'中文'}, es:{flag:'🇪🇸',label:'Español'}, fr:{flag:'🇫🇷',label:'Français'} };
   const m = META[lang] || META.en;
   const fl = document.getElementById('langFlag');   if(fl) fl.textContent = m.flag;
   const lb = document.getElementById('langLabel');  if(lb) lb.style.display = 'none';
