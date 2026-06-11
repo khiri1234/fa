@@ -1065,10 +1065,18 @@ body[data-lang="ru"],body[data-lang="ru"] h1,body[data-lang="ru"] h2,body[data-l
 [dir="rtl"] .footer-copy{direction:rtl;}
 [dir="rtl"] .nav-links{flex-direction:row-reverse;}
 /* lang switcher */
-.lang-switcher{display:flex;gap:6px;align-items:center;margin-left:auto;}
-.lang-btn{background:transparent;border:1.5px solid rgba(160,100,220,0.35);color:var(--lav);border-radius:20px;padding:4px 10px;font-size:0.72rem;font-family:'DM Sans',sans-serif;letter-spacing:.06em;cursor:pointer;transition:all .2s;}
+.nav-logo{flex:1;}
+.nav-links{flex:0 1 auto;}
+.lang-switcher{flex:1;display:flex;gap:5px;align-items:center;justify-content:flex-end;}
+/* always keep nav LTR so logo stays left */
+nav{direction:ltr!important;}
+.lang-btn{background:transparent;border:1.5px solid rgba(160,100,220,0.35);color:var(--lav);border-radius:20px;padding:4px 11px;font-size:0.7rem;font-family:'DM Sans',sans-serif;letter-spacing:.05em;cursor:pointer;transition:all .2s;white-space:nowrap;}
 .lang-btn:hover{background:rgba(160,100,220,0.15);}
-.lang-btn.active{background:rgba(160,100,220,0.25);border-color:var(--lav);color:#fff;}
+.lang-btn.active{background:rgba(160,100,220,0.28);border-color:var(--lav);color:#fff;font-weight:600;}
+@media(max-width:600px){
+  .lang-btn{padding:3px 8px;font-size:0.65rem;}
+  .lang-switcher{gap:4px;}
+}
 
 </style>
 </head>
