@@ -1075,13 +1075,11 @@ nav{direction:ltr!important;}
 .lang-trigger:hover{background:rgba(160,100,220,0.22);border-color:var(--lav);}
 .lang-trigger svg{width:9px;height:9px;transition:transform .22s;}
 .lang-drop.open .lang-trigger svg{transform:rotate(180deg);}
-.lang-menu{position:absolute;top:calc(100% + 6px);right:0;min-width:120px;background:rgba(30,12,50,0.94);backdrop-filter:blur(18px);border:1px solid rgba(160,100,220,0.28);border-radius:12px;overflow:hidden;padding:3px 0;box-shadow:0 10px 28px rgba(0,0,0,0.32);opacity:0;transform:translateY(-5px) scale(0.97);pointer-events:none;transition:opacity .2s,transform .2s;}
+.lang-menu{position:absolute;top:calc(100% + 6px);right:0;min-width:44px;background:rgba(30,12,50,0.94);backdrop-filter:blur(18px);border:1px solid rgba(160,100,220,0.28);border-radius:12px;overflow:hidden;padding:3px 0;box-shadow:0 10px 28px rgba(0,0,0,0.32);opacity:0;transform:translateY(-5px) scale(0.97);pointer-events:none;transition:opacity .2s,transform .2s;}
 .lang-drop.open .lang-menu{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
-.lang-option{display:flex;align-items:center;gap:8px;width:100%;padding:7px 12px;background:none;border:none;color:rgba(220,200,255,0.82);font-size:0.68rem;font-family:'DM Sans',sans-serif;letter-spacing:.03em;cursor:pointer;transition:background .18s,color .18s;text-align:left;}
-.lang-option:hover{background:rgba(160,100,220,0.18);color:#fff;}
-.lang-option.active{color:#fff;font-weight:600;}
-.lang-option.active::after{content:'✓';margin-left:auto;opacity:.7;}
-.lang-flag{font-size:0.82rem;line-height:1;}
+.lang-option{display:flex;align-items:center;justify-content:center;width:100%;padding:6px 8px;background:none;border:none;font-size:1.15rem;cursor:pointer;transition:background .18s,transform .15s;}
+.lang-option:hover{background:rgba(160,100,220,0.18);transform:scale(1.15);}
+.lang-option.active{background:rgba(160,100,220,0.25);}
 
 </style>
 </head>
@@ -1109,25 +1107,14 @@ nav{direction:ltr!important;}
     <div class="lang-drop" id="langDrop">
       <button class="lang-trigger" id="langTrigger" onclick="toggleLangMenu()">
         <span id="langFlag">🇬🇧</span>
-        <span id="langLabel">English</span>
-        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+        <svg width="10" height="10" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
       </button>
       <div class="lang-menu" id="langMenu">
-        <button class="lang-option active" data-lang="en" onclick="setLang('en');closeLangMenu()">
-          <span class="lang-flag">🇬🇧</span>English
-        </button>
-        <button class="lang-option" data-lang="fa" onclick="setLang('fa');closeLangMenu()">
-          <span class="lang-flag">🇮🇷</span>فارسی
-        </button>
-        <button class="lang-option" data-lang="ru" onclick="setLang('ru');closeLangMenu()">
-          <span class="lang-flag">🇷🇺</span>Русский
-        </button>
-        <button class="lang-option" data-lang="ar" onclick="setLang('ar');closeLangMenu()">
-          <span class="lang-flag">🇸🇦</span>العربية
-        </button>
-        <button class="lang-option" data-lang="zh" onclick="setLang('zh');closeLangMenu()">
-          <span class="lang-flag">🇨🇳</span>中文
-        </button>
+        <button class="lang-option active" data-lang="en" onclick="setLang('en');closeLangMenu()" title="English">🇬🇧</button>
+        <button class="lang-option" data-lang="fa" onclick="setLang('fa');closeLangMenu()" title="فارسی">🇮🇷</button>
+        <button class="lang-option" data-lang="ru" onclick="setLang('ru');closeLangMenu()" title="Русский">🇷🇺</button>
+        <button class="lang-option" data-lang="ar" onclick="setLang('ar');closeLangMenu()" title="العربية">🇸🇦</button>
+        <button class="lang-option" data-lang="zh" onclick="setLang('zh');closeLangMenu()" title="中文">🇨🇳</button>
       </div>
     </div>
   </div>
@@ -1831,7 +1818,7 @@ function setLang(lang) {
   const META = { en:{flag:'🇬🇧',label:'English'}, fa:{flag:'🇮🇷',label:'فارسی'}, ru:{flag:'🇷🇺',label:'Русский'}, ar:{flag:'🇸🇦',label:'العربية'}, zh:{flag:'🇨🇳',label:'中文'} };
   const m = META[lang] || META.en;
   const fl = document.getElementById('langFlag');   if(fl) fl.textContent = m.flag;
-  const lb = document.getElementById('langLabel');  if(lb) lb.textContent = m.label;
+  const lb = document.getElementById('langLabel');  if(lb) lb.style.display = 'none';
   document.querySelectorAll('.lang-option').forEach(b => {
     b.classList.toggle('active', b.dataset.lang === lang);
   });
