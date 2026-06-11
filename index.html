@@ -1128,6 +1128,18 @@ footer::before {
 .pass-shake{animation:passShake 0.44s ease;}
 @keyframes passOut{to{opacity:0;transform:scale(0.97);pointer-events:none;}}
 #passOverlay.closing{animation:passOut 0.5s ease forwards;}
+/* verify states */
+.pass-btn{position:relative;overflow:hidden;}
+.pass-btn.verifying{pointer-events:none;opacity:0.88;color:transparent!important;}
+.pass-btn.verifying::after{content:'';position:absolute;top:50%;left:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:passSpin 0.65s linear infinite;}
+@keyframes passSpin{to{transform:rotate(360deg);}}
+.pass-btn.pass-ok{background:linear-gradient(135deg,#2da05c,#52c87e)!important;pointer-events:none;color:transparent!important;box-shadow:0 8px 26px rgba(45,160,92,0.5)!important;}
+.pass-btn.pass-ok::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:1.3rem;font-weight:700;animation:checkPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;}
+@keyframes checkPop{from{transform:translate(-50%,-50%) scale(0) rotate(-20deg);}to{transform:translate(-50%,-50%) scale(1) rotate(0);}}
+.pass-btn.pass-no{background:linear-gradient(135deg,#b02050,#d84070)!important;pointer-events:none;color:transparent!important;box-shadow:0 8px 24px rgba(176,32,80,0.45)!important;}
+.pass-btn.pass-no::after{content:'✕';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:1.2rem;}
+#passCard.glow-ok{animation:cardOkGlow 0.75s ease forwards;}
+@keyframes cardOkGlow{50%{box-shadow:0 0 0 5px rgba(45,160,92,0.4),0 28px 70px rgba(45,160,92,0.25),inset 0 1px 0 rgba(255,255,255,0.9);}100%{box-shadow:0 28px 70px rgba(100,40,180,0.13),0 4px 18px rgba(120,60,180,0.08),inset 0 1px 0 rgba(255,255,255,0.9);}}
 
 
 body[data-lang="fa"],body[data-lang="fa"] h1,body[data-lang="fa"] h2,body[data-lang="fa"] p,body[data-lang="fa"] span,body[data-lang="fa"] button,body[data-lang="fa"] a{font-family:'Vazirmatn',sans-serif!important;}
@@ -2090,22 +2102,38 @@ document.addEventListener('click', function(e){
 
   function unlock() {
     const entered = input.value.trim().toLowerCase();
-    if(entered === KEY) {
-      window._passUnlocked = true;
-      overlay.classList.add('closing');
-      setTimeout(() => {
-        overlay.style.display='none';
-        document.body.style.overflow='';
-        if(typeof tryAutoPlay === 'function') tryAutoPlay();
-      }, 560);
-    } else {
-      err.classList.remove('hidden');
-      card.classList.remove('pass-shake');
-      void card.offsetWidth;
-      card.classList.add('pass-shake');
-      input.value = '';
-      input.focus();
-    }
+    input.disabled = true;
+    btn.classList.add('verifying');
+
+    setTimeout(() => {
+      btn.classList.remove('verifying');
+
+      if (entered === KEY) {
+        btn.classList.add('pass-ok');
+        card.classList.add('glow-ok');
+        setTimeout(() => {
+          window._passUnlocked = true;
+          overlay.classList.add('closing');
+          setTimeout(() => {
+            overlay.style.display = 'none';
+            document.body.style.overflow = '';
+            if (typeof tryAutoPlay === 'function') tryAutoPlay();
+          }, 520);
+        }, 800);
+      } else {
+        btn.classList.add('pass-no');
+        err.classList.remove('hidden');
+        card.classList.remove('pass-shake');
+        void card.offsetWidth;
+        card.classList.add('pass-shake');
+        setTimeout(() => {
+          btn.classList.remove('pass-no');
+          input.disabled = false;
+          input.value = '';
+          input.focus();
+        }, 700);
+      }
+    }, 750);
   }
 })();
 </script>
