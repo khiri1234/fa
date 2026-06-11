@@ -827,7 +827,25 @@ nav.scrolled {
   transition: opacity 0.7s, transform 0.7s, box-shadow 0.4s;
 }
 .feature-card.vis { opacity: 1; transform: translateY(0); }
+.feature-card.vis { opacity: 1; transform: translateY(0); }
 .feature-card:hover { box-shadow: 0 40px 80px rgba(0,0,0,0.6); }
+.feature-card.brilliant-gold {
+  box-shadow:
+    0 0 0 2.5px #cfa84a,
+    0 0 16px 6px rgba(215,170,60,0.72),
+    0 0 38px 14px rgba(210,210,230,0.28),
+    0 40px 80px rgba(0,0,0,0.5);
+  animation: brilliantGold 3s ease-in-out infinite;
+  z-index: 1;
+}
+@keyframes brilliantGold {
+  0%,100% {
+    box-shadow: 0 0 0 2.5px #cfa84a, 0 0 16px 6px rgba(215,170,60,0.72), 0 0 38px 14px rgba(210,210,230,0.28), 0 40px 80px rgba(0,0,0,0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 2.5px #d8d8e8, 0 0 22px 10px rgba(210,210,235,0.88), 0 0 52px 22px rgba(215,170,60,0.38), 0 40px 80px rgba(0,0,0,0.5);
+  }
+}
 .feature-card img {
   width: 100%; height: 100%;
   object-fit: cover;
@@ -1400,7 +1418,7 @@ const featuresData = [
   {k:'IMG_5579',  t:'Princess in Lavender', loc:'Birthday Edition', desc:'The birthday princess in full bloom'},
   {k:'IMG_3554',  t:'Grand Mosque',          loc:'Abu Dhabi',        desc:'Grace at the Sheikh Zayed Mosque'},
   {k:'img7a84',   t:'Winter Wonderland',     loc:'Moscow',           desc:'A snow-kissed day at the Bolshoi'},
-  {k:'IMG_5812',  t:'Golden Afternoon',      loc:'Birthday',         desc:'Roses, sunshine and a perfect smile'},
+  {k:'IMG_5812',  t:'Golden Afternoon',      loc:'Birthday',         desc:'Roses, sunshine and a perfect smile', brilliant:true},
 ];
 
 // ── INIT ──
@@ -1435,7 +1453,7 @@ galleryData.forEach((item,i)=>{
 const fg = document.getElementById('featuresGrid');
 featuresData.forEach((item,i)=>{
   const div=document.createElement('div');
-  div.className='feature-card';
+  div.className='feature-card' + (item.brilliant ? ' brilliant-gold' : '');
   div.dataset.delay=i;
   div.innerHTML=`
     <img src="${IMGS[item.k]}" alt="${item.t}" loading="lazy">
