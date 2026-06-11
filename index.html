@@ -1086,24 +1086,30 @@ footer::before {
 .instr-icon:nth-child(3){animation-delay:1.3s;}
 @keyframes instrFloat{0%,100%{transform:translateY(0) rotate(7deg);}50%{transform:translateY(-9px) rotate(-7deg);}}
 /* ── passkey overlay ── */
-#passOverlay{position:fixed;inset:0;z-index:99999;background:rgba(10,2,22,0.88);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;}
-#passCard{background:rgba(28,10,52,0.92);border:1px solid rgba(180,100,255,0.35);border-radius:28px;padding:44px 40px 38px;text-align:center;box-shadow:0 32px 80px rgba(0,0,0,0.6),0 0 60px rgba(160,40,232,0.18);max-width:340px;width:90%;}
-.pass-lock{font-size:2.8rem;margin-bottom:10px;animation:lockPulse 2.4s ease-in-out infinite;}
-@keyframes lockPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
-.pass-title{font-family:'Alex Brush',cursive;font-size:1.9rem;color:#e8c8ff;margin-bottom:4px;}
-.pass-sub{font-size:0.8rem;color:rgba(200,170,255,0.65);letter-spacing:.06em;margin-bottom:28px;}
+#passOverlay{position:fixed;inset:0;z-index:99999;background:radial-gradient(ellipse at 38% 42%,#f5e8ff 0%,#e8d5f5 44%,#d4bff0 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+.pass-blob{position:absolute;border-radius:50%;pointer-events:none;filter:blur(64px);opacity:0.5;}
+.pass-blob-1{width:360px;height:360px;background:#c9a0f0;top:-100px;left:-90px;animation:blobDrift 14s ease-in-out infinite;}
+.pass-blob-2{width:280px;height:280px;background:#b4d0ff;bottom:-70px;right:-60px;animation:blobDrift 18s ease-in-out infinite reverse;}
+.pass-blob-3{width:220px;height:220px;background:#f4b8d8;top:52%;left:62%;animation:blobDrift 11s ease-in-out infinite 2.5s;}
+@keyframes blobDrift{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(20px,-24px) scale(1.07);}66%{transform:translate(-16px,18px) scale(0.95);}}
+#passCard{position:relative;background:rgba(255,255,255,0.7);border:1px solid rgba(122,64,176,0.16);border-radius:32px;padding:54px 44px 44px;text-align:center;box-shadow:0 28px 70px rgba(100,40,180,0.13),0 4px 18px rgba(120,60,180,0.08),inset 0 1px 0 rgba(255,255,255,0.9);max-width:360px;width:90%;backdrop-filter:blur(28px);}
+.pass-deco{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:2.4rem;animation:passDecoFloat 3.2s ease-in-out infinite;filter:drop-shadow(0 4px 10px rgba(122,64,176,0.3));}
+@keyframes passDecoFloat{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-8px);}}
+.pass-title{font-family:'Alex Brush',cursive;font-size:2.7rem;color:var(--lav);margin-bottom:2px;line-height:1.1;}
+.pass-sub{font-size:0.73rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:30px;}
 .pass-input-wrap{margin-bottom:10px;}
-.pass-single{width:100%;padding:14px 18px;border-radius:14px;border:1.5px solid rgba(160,80,240,0.45);background:rgba(255,255,255,0.05);color:#e8c8ff;font-size:1rem;text-align:center;letter-spacing:.18em;outline:none;box-sizing:border-box;transition:border-color .2s,box-shadow .2s;}
-.pass-single:focus{border-color:#c060f0;box-shadow:0 0 0 3px rgba(160,40,232,0.25);}
-.pass-single::placeholder{color:rgba(200,170,255,0.38);letter-spacing:.06em;}
-.pass-err{font-size:0.76rem;color:#f07080;min-height:18px;margin-bottom:16px;transition:opacity .25s;}
+.pass-single{width:100%;padding:15px 20px;border-radius:16px;border:1.5px solid rgba(122,64,176,0.22);background:rgba(255,255,255,0.88);color:var(--cream);font-size:1rem;text-align:center;letter-spacing:.22em;outline:none;box-sizing:border-box;font-family:'DM Sans',sans-serif;transition:border-color .22s,box-shadow .22s;box-shadow:inset 0 2px 6px rgba(100,40,160,0.06);}
+.pass-single:focus{border-color:var(--lav);box-shadow:0 0 0 3.5px rgba(122,64,176,0.13),inset 0 2px 6px rgba(100,40,160,0.06);}
+.pass-single::placeholder{color:rgba(30,10,58,0.28);letter-spacing:.04em;}
+.pass-err{font-size:0.73rem;color:#a01840;min-height:18px;margin-bottom:14px;transition:opacity .25s;}
 .pass-err.hidden{opacity:0;}
-.pass-btn{width:100%;padding:13px;border-radius:14px;border:none;background:linear-gradient(135deg,#9030d8,#c060f0);color:#fff;font-size:1rem;font-weight:500;letter-spacing:.04em;cursor:pointer;transition:opacity .2s,transform .15s;}
-.pass-btn:hover{opacity:0.9;transform:translateY(-1px);}
-@keyframes passShake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-8px);}40%,80%{transform:translateX(8px);}}
-.pass-shake{animation:passShake 0.42s ease;}
-@keyframes passOut{to{opacity:0;transform:scale(1.04);pointer-events:none;}}
-#passOverlay.closing{animation:passOut 0.55s ease forwards;}
+.pass-btn{width:100%;padding:14px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--lav) 0%,var(--lav2) 100%);color:#fff;font-size:0.95rem;font-weight:500;letter-spacing:.06em;cursor:pointer;transition:opacity .2s,transform .15s,box-shadow .2s;box-shadow:0 8px 24px rgba(122,64,176,0.36);}
+.pass-btn:hover{opacity:0.91;transform:translateY(-2px);box-shadow:0 14px 34px rgba(122,64,176,0.46);}
+.pass-btn:active{transform:translateY(0);box-shadow:0 5px 16px rgba(122,64,176,0.3);}
+@keyframes passShake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-9px);}40%,80%{transform:translateX(9px);}}
+.pass-shake{animation:passShake 0.44s ease;}
+@keyframes passOut{to{opacity:0;transform:scale(0.97);pointer-events:none;}}
+#passOverlay.closing{animation:passOut 0.5s ease forwards;}
 
 
 body[data-lang="fa"],body[data-lang="fa"] h1,body[data-lang="fa"] h2,body[data-lang="fa"] p,body[data-lang="fa"] span,body[data-lang="fa"] button,body[data-lang="fa"] a{font-family:'Vazirmatn',sans-serif!important;}
@@ -1140,12 +1146,15 @@ nav{direction:ltr!important;}
 
 <!-- PASSKEY OVERLAY -->
 <div id="passOverlay">
+  <div class="pass-blob pass-blob-1"></div>
+  <div class="pass-blob pass-blob-2"></div>
+  <div class="pass-blob pass-blob-3"></div>
   <div id="passCard">
-    <div class="pass-lock">🔐</div>
+    <div class="pass-deco">🌸</div>
     <div class="pass-title">Fatemeh</div>
     <div class="pass-sub">Enter passkey to continue</div>
     <div class="pass-input-wrap">
-      <input class="pass-single" id="passInput" type="password" placeholder="Enter passkey" autocomplete="off" spellcheck="false">
+      <input class="pass-single" id="passInput" type="password" placeholder="Your secret word…" autocomplete="off" spellcheck="false">
     </div>
     <div class="pass-err hidden" id="passErr">Incorrect passkey — try again</div>
     <button class="pass-btn" id="passBtn">Unlock ✨</button>
@@ -2054,9 +2063,6 @@ document.addEventListener('click', function(e){
   const btn     = document.getElementById('passBtn');
   const input   = document.getElementById('passInput');
 
-  // Skip if already unlocked this session
-  try { if(sessionStorage.getItem('fa-unlocked')==='1'){ overlay.style.display='none'; return; } } catch(e){}
-
   document.body.style.overflow = 'hidden';
   input.focus();
 
@@ -2067,7 +2073,6 @@ document.addEventListener('click', function(e){
   function unlock() {
     const entered = input.value.trim().toLowerCase();
     if(entered === KEY) {
-      try { sessionStorage.setItem('fa-unlocked','1'); } catch(e){}
       overlay.classList.add('closing');
       setTimeout(() => { overlay.style.display='none'; document.body.style.overflow=''; }, 560);
     } else {
