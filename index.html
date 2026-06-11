@@ -728,6 +728,23 @@ nav.scrolled {
   font-size: 0.8rem;
 }
 .gallery-item:hover .expand-icon { opacity: 1; }
+.gallery-item.brilliant {
+  box-shadow:
+    0 0 0 2.5px #d070f8,
+    0 0 14px 5px rgba(180,50,240,0.75),
+    0 0 32px 12px rgba(220,130,255,0.35),
+    0 20px 40px rgba(0,0,0,0.4);
+  animation: brilliantGlow 2.6s ease-in-out infinite;
+  z-index: 1;
+}
+@keyframes brilliantGlow {
+  0%,100% {
+    box-shadow: 0 0 0 2.5px #d070f8, 0 0 14px 5px rgba(180,50,240,0.75), 0 0 32px 12px rgba(220,130,255,0.35), 0 20px 40px rgba(0,0,0,0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 2.5px #ff9fd8, 0 0 22px 9px rgba(255,100,220,0.9), 0 0 50px 20px rgba(255,160,255,0.45), 0 20px 40px rgba(0,0,0,0.4);
+  }
+}
 
 /* ── STORY / MESSAGE SECTION ── */
 .story-section {
@@ -1287,6 +1304,7 @@ const AUDIO = "data:audio/mpeg;base64,SUQzAwAAACNndlRJVDIAAAAiAAAAVGF2YWxvZGV0LU
 
 // ── GALLERY DATA ──
 const galleryData = [
+  {k:'IMG_5812',  cap:'Golden Afternoon', tag:'birthday', loc:'Birthday', brilliant:true},
   {k:'IMG_5811',  cap:'Moscow Sunset',    tag:'portraits',loc:'Moscow Rooftop'},
   {k:'IMG_5578',  cap:'Birthday Queen',   tag:'birthday', loc:'Celebration'},
   {k:'b9e8705b',  cap:'Lavender Dreams',  tag:'birthday', loc:'Birthday Party'},
@@ -1324,7 +1342,7 @@ document.getElementById('storyImg3').src = IMGS['img7EC9'];
 const grid = document.getElementById('galleryGrid');
 galleryData.forEach((item,i)=>{
   const div = document.createElement('div');
-  div.className='gallery-item';
+  div.className='gallery-item' + (item.brilliant ? ' brilliant' : '');
   div.dataset.delay=i;
   div.dataset.filter=item.tag;
   div.dataset.idx=i;
