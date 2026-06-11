@@ -313,7 +313,8 @@ nav.scrolled {
 }
 .badge-1 { bottom: 12%; left: -14%; animation-delay: 0s; }
 .badge-2 { top: 10%; right: -10%; animation-delay: 2.5s; }
-@media (max-width: 500px) { .badge-1 { left: -4%; } .badge-2 { right: -4%; } }
+.badge-3 { bottom: 38%; right: -12%; animation-delay: 1.2s; }
+@media (max-width: 500px) { .badge-1 { left: -4%; } .badge-2 { right: -4%; } .badge-3 { right: -4%; } }
 @keyframes badgeFloat {
   0%,100% { transform: translateY(0); }
   50%      { transform: translateY(-8px); }
@@ -1052,6 +1053,12 @@ footer::before {
   0%   { transform: translate(-50%,-50%) scale(0.3); opacity: 0.88; border-width: 2px; }
   100% { transform: translate(-50%,-50%) scale(4.2); opacity: 0;    border-width: 0.5px; }
 }
+/* ── tooth decoration ── */
+.tooth-row{display:flex;justify-content:center;gap:14px;margin-top:18px;}
+.tooth-icon{font-size:1.5rem;animation:toothBounce 2.4s ease-in-out infinite;filter:drop-shadow(0 2px 6px rgba(160,80,220,0.35));}
+.tooth-icon:nth-child(2){animation-delay:.4s;}
+.tooth-icon:nth-child(3){animation-delay:.8s;}
+@keyframes toothBounce{0%,100%{transform:translateY(0) rotate(-6deg);}50%{transform:translateY(-8px) rotate(6deg);}}
 /* ── multi-language fonts & layout ── */
 body[data-lang="fa"],body[data-lang="fa"] h1,body[data-lang="fa"] h2,body[data-lang="fa"] p,body[data-lang="fa"] span,body[data-lang="fa"] button,body[data-lang="fa"] a{font-family:'Vazirmatn',sans-serif!important;}
 body[data-lang="ar"],body[data-lang="ar"] h1,body[data-lang="ar"] h2,body[data-lang="ar"] p,body[data-lang="ar"] span,body[data-lang="ar"] button,body[data-lang="ar"] a{font-family:'Tajawal',sans-serif!important;}
@@ -1147,6 +1154,10 @@ nav{direction:ltr!important;}
         <span class="badge-icon">✨</span>
         <div class="badge-text"><strong id="badge2T">Happy Birthday</strong><span id="badge2S">my love ♥️</span></div>
       </div>
+      <div class="badge badge-3">
+        <span class="badge-icon">🦷</span>
+        <div class="badge-text"><strong>Dentist</strong><span>Dr. Fatemeh 🩺</span></div>
+      </div>
     </div>
   </div>
 
@@ -1237,6 +1248,11 @@ nav{direction:ltr!important;}
   <div class="section-header reveal" style="text-align:center">
     <span class="eyebrow" id="featEyebrow">Chapter Twenty-Four</span>
     <h2 class="section-title" id="featH2">Her <em>World</em></h2>
+    <div class="tooth-row">
+      <span class="tooth-icon">🦷</span>
+      <span class="tooth-icon">🦷</span>
+      <span class="tooth-icon">🦷</span>
+    </div>
   </div>
   <div class="features-grid" id="featuresGrid"></div>
 </section>
