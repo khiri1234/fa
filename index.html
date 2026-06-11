@@ -1085,7 +1085,26 @@ footer::before {
 .instr-icon:nth-child(2){animation-delay:.65s;}
 .instr-icon:nth-child(3){animation-delay:1.3s;}
 @keyframes instrFloat{0%,100%{transform:translateY(0) rotate(7deg);}50%{transform:translateY(-9px) rotate(-7deg);}}
-/* ── multi-language fonts & layout ── */
+/* ── passkey overlay ── */
+#passOverlay{position:fixed;inset:0;z-index:99999;background:rgba(10,2,22,0.88);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;}
+#passCard{background:rgba(28,10,52,0.92);border:1px solid rgba(180,100,255,0.35);border-radius:28px;padding:44px 40px 38px;text-align:center;box-shadow:0 32px 80px rgba(0,0,0,0.6),0 0 60px rgba(160,40,232,0.18);max-width:340px;width:90%;}
+.pass-lock{font-size:2.8rem;margin-bottom:10px;animation:lockPulse 2.4s ease-in-out infinite;}
+@keyframes lockPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}
+.pass-title{font-family:'Alex Brush',cursive;font-size:1.9rem;color:#e8c8ff;margin-bottom:4px;}
+.pass-sub{font-size:0.8rem;color:rgba(200,170,255,0.65);letter-spacing:.06em;margin-bottom:28px;}
+.pass-digits{display:flex;gap:12px;justify-content:center;margin-bottom:10px;}
+.pass-digit{width:54px;height:62px;border-radius:14px;border:1.5px solid rgba(160,80,240,0.45);background:rgba(255,255,255,0.05);color:#e8c8ff;font-size:1.8rem;text-align:center;outline:none;caret-color:transparent;transition:border-color .2s,box-shadow .2s;}
+.pass-digit:focus{border-color:#c060f0;box-shadow:0 0 0 3px rgba(160,40,232,0.25);}
+.pass-err{font-size:0.76rem;color:#f07080;min-height:18px;margin-bottom:16px;transition:opacity .25s;}
+.pass-err.hidden{opacity:0;}
+.pass-btn{width:100%;padding:13px;border-radius:14px;border:none;background:linear-gradient(135deg,#9030d8,#c060f0);color:#fff;font-size:1rem;font-weight:500;letter-spacing:.04em;cursor:pointer;transition:opacity .2s,transform .15s;}
+.pass-btn:hover{opacity:0.9;transform:translateY(-1px);}
+@keyframes passShake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-8px);}40%,80%{transform:translateX(8px);}}
+.pass-shake{animation:passShake 0.42s ease;}
+@keyframes passOut{to{opacity:0;transform:scale(1.04);pointer-events:none;}}
+#passOverlay.closing{animation:passOut 0.55s ease forwards;}
+
+
 body[data-lang="fa"],body[data-lang="fa"] h1,body[data-lang="fa"] h2,body[data-lang="fa"] p,body[data-lang="fa"] span,body[data-lang="fa"] button,body[data-lang="fa"] a{font-family:'Vazirmatn',sans-serif!important;}
 body[data-lang="ar"],body[data-lang="ar"] h1,body[data-lang="ar"] h2,body[data-lang="ar"] p,body[data-lang="ar"] span,body[data-lang="ar"] button,body[data-lang="ar"] a{font-family:'Tajawal',sans-serif!important;}
 body[data-lang="ru"],body[data-lang="ru"] h1,body[data-lang="ru"] h2,body[data-lang="ru"] p,body[data-lang="ru"] span,body[data-lang="ru"] button,body[data-lang="ru"] a{font-family:'Nunito',sans-serif!important;}
@@ -1117,6 +1136,23 @@ nav{direction:ltr!important;}
 </style>
 </head>
 <body>
+
+<!-- PASSKEY OVERLAY -->
+<div id="passOverlay">
+  <div id="passCard">
+    <div class="pass-lock">🔐</div>
+    <div class="pass-title">Fatemeh</div>
+    <div class="pass-sub">Enter passkey to continue</div>
+    <div class="pass-digits">
+      <input class="pass-digit" id="pd0" type="password" maxlength="1" inputmode="numeric" autocomplete="off">
+      <input class="pass-digit" id="pd1" type="password" maxlength="1" inputmode="numeric" autocomplete="off">
+      <input class="pass-digit" id="pd2" type="password" maxlength="1" inputmode="numeric" autocomplete="off">
+      <input class="pass-digit" id="pd3" type="password" maxlength="1" inputmode="numeric" autocomplete="off">
+    </div>
+    <div class="pass-err hidden" id="passErr">Incorrect passkey — try again</div>
+    <button class="pass-btn" id="passBtn">Unlock ✨</button>
+  </div>
+</div>
 
 <!-- CURSOR -->
 <div class="cursor-dot" id="cursorDot"></div>
@@ -2010,6 +2046,64 @@ document.addEventListener('click', function(e){
   opacity:0; transition:opacity 0.4s, transform 0.4s;
   pointer-events:none; z-index:8000; white-space:nowrap;
 ">🎵 Tap anywhere to unmute</div>
+
+<script>
+(function(){
+  const KEY = '2002';
+  const overlay = document.getElementById('passOverlay');
+  const card    = document.getElementById('passCard');
+  const err     = document.getElementById('passErr');
+  const btn     = document.getElementById('passBtn');
+  const digits  = [0,1,2,3].map(i => document.getElementById('pd'+i));
+
+  // Skip if already unlocked this session
+  try { if(sessionStorage.getItem('fa-unlocked')==='1'){ overlay.style.display='none'; return; } } catch(e){}
+
+  document.body.style.overflow = 'hidden';
+  digits[0].focus();
+
+  digits.forEach((inp, i) => {
+    inp.addEventListener('input', () => {
+      const v = inp.value.replace(/\D/g,'');
+      inp.value = v ? v[0] : '';
+      if(inp.value && i < 3) digits[i+1].focus();
+      err.classList.add('hidden');
+    });
+    inp.addEventListener('keydown', e => {
+      if(e.key === 'Backspace' && !inp.value && i > 0) {
+        digits[i-1].value = '';
+        digits[i-1].focus();
+      }
+      if(e.key === 'Enter') unlock();
+    });
+    inp.addEventListener('paste', e => {
+      e.preventDefault();
+      const paste = (e.clipboardData||window.clipboardData).getData('text').replace(/\D/g,'');
+      paste.split('').slice(0,4).forEach((ch, j) => { if(digits[j]) digits[j].value = ch; });
+      const last = Math.min(paste.length - 1, 3);
+      if(last >= 0) digits[last].focus();
+    });
+  });
+
+  btn.addEventListener('click', unlock);
+
+  function unlock() {
+    const entered = digits.map(d => d.value).join('');
+    if(entered === KEY) {
+      try { sessionStorage.setItem('fa-unlocked','1'); } catch(e){}
+      overlay.classList.add('closing');
+      setTimeout(() => { overlay.style.display='none'; document.body.style.overflow=''; }, 560);
+    } else {
+      err.classList.remove('hidden');
+      card.classList.remove('pass-shake');
+      void card.offsetWidth;
+      card.classList.add('pass-shake');
+      digits.forEach(d => d.value = '');
+      digits[0].focus();
+    }
+  }
+})();
+</script>
 
 </body>
 </html>
