@@ -1672,7 +1672,7 @@ window.addEventListener('load',()=>{
   setTimeout(()=>{
     document.getElementById('loader').classList.add('hide');
     burst();
-    tryAutoPlay();
+    if(window._passUnlocked) tryAutoPlay();
   },2200);
 });
 
@@ -2073,8 +2073,13 @@ document.addEventListener('click', function(e){
   function unlock() {
     const entered = input.value.trim().toLowerCase();
     if(entered === KEY) {
+      window._passUnlocked = true;
       overlay.classList.add('closing');
-      setTimeout(() => { overlay.style.display='none'; document.body.style.overflow=''; }, 560);
+      setTimeout(() => {
+        overlay.style.display='none';
+        document.body.style.overflow='';
+        if(typeof tryAutoPlay === 'function') tryAutoPlay();
+      }, 560);
     } else {
       err.classList.remove('hidden');
       card.classList.remove('pass-shake');
