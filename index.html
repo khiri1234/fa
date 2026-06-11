@@ -1064,19 +1064,23 @@ body[data-lang="ru"],body[data-lang="ru"] h1,body[data-lang="ru"] h2,body[data-l
 [dir="rtl"] .player-left{text-align:right;}
 [dir="rtl"] .footer-copy{direction:rtl;}
 [dir="rtl"] .nav-links{flex-direction:row-reverse;}
-/* lang switcher */
+/* lang dropdown */
+nav{direction:ltr!important;}
 .nav-logo{flex:1;}
 .nav-links{flex:0 1 auto;}
-.lang-switcher{flex:1;display:flex;gap:5px;align-items:center;justify-content:flex-end;}
-/* always keep nav LTR so logo stays left */
-nav{direction:ltr!important;}
-.lang-btn{background:transparent;border:1.5px solid rgba(160,100,220,0.35);color:var(--lav);border-radius:20px;padding:4px 11px;font-size:0.7rem;font-family:'DM Sans',sans-serif;letter-spacing:.05em;cursor:pointer;transition:all .2s;white-space:nowrap;}
-.lang-btn:hover{background:rgba(160,100,220,0.15);}
-.lang-btn.active{background:rgba(160,100,220,0.28);border-color:var(--lav);color:#fff;font-weight:600;}
-@media(max-width:600px){
-  .lang-btn{padding:3px 8px;font-size:0.65rem;}
-  .lang-switcher{gap:4px;}
-}
+.lang-switcher{flex:1;display:flex;align-items:center;justify-content:flex-end;}
+.lang-drop{position:relative;font-family:'DM Sans',sans-serif;}
+.lang-trigger{display:flex;align-items:center;gap:6px;background:rgba(160,100,220,0.12);border:1.5px solid rgba(160,100,220,0.35);color:var(--lav);border-radius:24px;padding:5px 14px 5px 12px;font-size:0.75rem;letter-spacing:.06em;cursor:pointer;transition:all .22s;white-space:nowrap;user-select:none;}
+.lang-trigger:hover{background:rgba(160,100,220,0.22);border-color:var(--lav);}
+.lang-trigger svg{transition:transform .22s;}
+.lang-drop.open .lang-trigger svg{transform:rotate(180deg);}
+.lang-menu{position:absolute;top:calc(100% + 8px);right:0;min-width:148px;background:rgba(30,12,50,0.92);backdrop-filter:blur(18px);border:1px solid rgba(160,100,220,0.3);border-radius:14px;overflow:hidden;padding:4px 0;box-shadow:0 12px 36px rgba(0,0,0,0.35);opacity:0;transform:translateY(-6px) scale(0.97);pointer-events:none;transition:opacity .2s,transform .2s;}
+.lang-drop.open .lang-menu{opacity:1;transform:translateY(0) scale(1);pointer-events:auto;}
+.lang-option{display:flex;align-items:center;gap:10px;width:100%;padding:9px 16px;background:none;border:none;color:rgba(220,200,255,0.85);font-size:0.78rem;font-family:'DM Sans',sans-serif;letter-spacing:.04em;cursor:pointer;transition:background .18s,color .18s;text-align:left;}
+.lang-option:hover{background:rgba(160,100,220,0.18);color:#fff;}
+.lang-option.active{color:#fff;font-weight:600;}
+.lang-option.active::after{content:'✓';margin-left:auto;opacity:.7;}
+.lang-flag{font-size:1rem;line-height:1;}
 
 </style>
 </head>
@@ -1101,10 +1105,27 @@ nav{direction:ltr!important;}
     <li><a href="#music"   id="navMusic">Music</a></li>
   </ul>
   <div class="lang-switcher">
-    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
-    <button class="lang-btn"        data-lang="fa" onclick="setLang('fa')">FA</button>
-    <button class="lang-btn"        data-lang="ru" onclick="setLang('ru')">RU</button>
-    <button class="lang-btn"        data-lang="ar" onclick="setLang('ar')">AR</button>
+    <div class="lang-drop" id="langDrop">
+      <button class="lang-trigger" id="langTrigger" onclick="toggleLangMenu()">
+        <span id="langFlag">🇬🇧</span>
+        <span id="langLabel">English</span>
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor"><path d="M2 4l4 4 4-4"/></svg>
+      </button>
+      <div class="lang-menu" id="langMenu">
+        <button class="lang-option active" data-lang="en" onclick="setLang('en');closeLangMenu()">
+          <span class="lang-flag">🇬🇧</span>English
+        </button>
+        <button class="lang-option" data-lang="fa" onclick="setLang('fa');closeLangMenu()">
+          <span class="lang-flag">🇮🇷</span>فارسی
+        </button>
+        <button class="lang-option" data-lang="ru" onclick="setLang('ru');closeLangMenu()">
+          <span class="lang-flag">🇷🇺</span>Русский
+        </button>
+        <button class="lang-option" data-lang="ar" onclick="setLang('ar');closeLangMenu()">
+          <span class="lang-flag">🇸🇦</span>العربية
+        </button>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -1777,14 +1798,30 @@ function setLang(lang) {
   setH('featH2',    t.featH2);
   set('footerCopy', t.footerCopy);
 
-  // update active button
-  document.querySelectorAll('.lang-btn').forEach(b => {
+  // update dropdown label & active state
+  const META = { en:{flag:'🇬🇧',label:'English'}, fa:{flag:'🇮🇷',label:'فارسی'}, ru:{flag:'🇷🇺',label:'Русский'}, ar:{flag:'🇸🇦',label:'العربية'} };
+  const m = META[lang] || META.en;
+  const fl = document.getElementById('langFlag');   if(fl) fl.textContent = m.flag;
+  const lb = document.getElementById('langLabel');  if(lb) lb.textContent = m.label;
+  document.querySelectorAll('.lang-option').forEach(b => {
     b.classList.toggle('active', b.dataset.lang === lang);
   });
 
   // persist
   try { localStorage.setItem('fa-lang', lang); } catch(e){}
 }
+
+function toggleLangMenu(){
+  document.getElementById('langDrop').classList.toggle('open');
+}
+function closeLangMenu(){
+  document.getElementById('langDrop').classList.remove('open');
+}
+// close on outside click
+document.addEventListener('click', function(e){
+  const d = document.getElementById('langDrop');
+  if(d && !d.contains(e.target)) d.classList.remove('open');
+});
 
 // restore saved language on load
 (function(){
