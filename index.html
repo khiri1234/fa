@@ -6,7 +6,7 @@
 <title>Fatemeh ♥️</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@200;300;400&family=Alex+Brush&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&family=Tajawal:wght@300;400;500;700&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&family=Tajawal:wght@300;400;500;700&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
 /* ── RESET & ROOT ── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -1056,6 +1056,7 @@ footer::before {
 body[data-lang="fa"],body[data-lang="fa"] h1,body[data-lang="fa"] h2,body[data-lang="fa"] p,body[data-lang="fa"] span,body[data-lang="fa"] button,body[data-lang="fa"] a{font-family:'Vazirmatn',sans-serif!important;}
 body[data-lang="ar"],body[data-lang="ar"] h1,body[data-lang="ar"] h2,body[data-lang="ar"] p,body[data-lang="ar"] span,body[data-lang="ar"] button,body[data-lang="ar"] a{font-family:'Tajawal',sans-serif!important;}
 body[data-lang="ru"],body[data-lang="ru"] h1,body[data-lang="ru"] h2,body[data-lang="ru"] p,body[data-lang="ru"] span,body[data-lang="ru"] button,body[data-lang="ru"] a{font-family:'Nunito',sans-serif!important;}
+body[data-lang="zh"],body[data-lang="zh"] h1,body[data-lang="zh"] h2,body[data-lang="zh"] p,body[data-lang="zh"] span,body[data-lang="zh"] button,body[data-lang="zh"] a{font-family:'Noto Sans SC',sans-serif!important;}
 [dir="rtl"] .hero{direction:rtl;}
 [dir="rtl"] .hero-text{text-align:right;}
 [dir="rtl"] .hero-cta{justify-content:flex-end;}
@@ -1123,6 +1124,9 @@ nav{direction:ltr!important;}
         </button>
         <button class="lang-option" data-lang="ar" onclick="setLang('ar');closeLangMenu()">
           <span class="lang-flag">🇸🇦</span>العربية
+        </button>
+        <button class="lang-option" data-lang="zh" onclick="setLang('zh');closeLangMenu()">
+          <span class="lang-flag">🇨🇳</span>中文
         </button>
       </div>
     </div>
@@ -1751,6 +1755,31 @@ const TRANSLATIONS = {
     featEyebrow:'الفصل الرابع والعشرون',
     featH2:'عالمها <em>المذهل</em>',
     footerCopy:'صُنع بحب · عيد ميلاد سعيد ✨'
+  },
+  zh: {
+    navGallery:'相册', navStory:'故事', navMusic:'音乐',
+    heroEyebrow:'生日快乐',
+    heroH1:'致最<br><em>耀眼</em>的灵魂',
+    heroDesc:'与你共度的每一刻，都是我永远珍藏的记忆。你是优雅、美丽与光芒——融于一个非凡的人。',
+    btnGallery:'浏览相册', btnMusic:'播放我们的歌',
+    badge1T:'生日女王', badge1S:'第24章',
+    badge2T:'生日快乐', badge2S:'我的爱 ♥️',
+    scroll:'滚动',
+    musicEyebrow:'一首特别的歌',
+    musicH2:'我们的<br><em style="font-style:italic;color:var(--lav);">旋律</em>',
+    musicDesc:'精心挑选自《Tavalodet Mobarak》的片段——这首波斯语生日经典完美诠释了今天的一切感受。',
+    galEyebrow:'记忆与时光',
+    galH2:'她的<em>美丽</em>世界',
+    fAll:'全部', fBday:'生日', fTravel:'旅行', fPortraits:'肖像',
+    storyEyebrow:'一封信',
+    storyQuote:'"你让每一个平凡的瞬间，都像是从梦里摘来的。"',
+    storyP1:'我看着你在大清真寺前从容自信地伫立，在莫斯科的雪花下欢笑，手捧那个「24」蛋糕，仿佛一切的开始——因为它确实是。',
+    storyP2:'你的眼中藏着整座城市。你是蒙娜丽莎，是奇迹花园，是城市的天际线，融为一体。而不可思议的是，你属于我。',
+    storyP3:'生日快乐，我爱的人。与你共度的每一年，都是一份荣幸。',
+    storySig:'带着全部的爱 ♥️',
+    featEyebrow:'第二十四章',
+    featH2:'她的<em>世界</em>',
+    footerCopy:'用爱制作 · 生日快乐 ✨'
   }
 };
 
@@ -1799,7 +1828,7 @@ function setLang(lang) {
   set('footerCopy', t.footerCopy);
 
   // update dropdown label & active state
-  const META = { en:{flag:'🇬🇧',label:'English'}, fa:{flag:'🇮🇷',label:'فارسی'}, ru:{flag:'🇷🇺',label:'Русский'}, ar:{flag:'🇸🇦',label:'العربية'} };
+  const META = { en:{flag:'🇬🇧',label:'English'}, fa:{flag:'🇮🇷',label:'فارسی'}, ru:{flag:'🇷🇺',label:'Русский'}, ar:{flag:'🇸🇦',label:'العربية'}, zh:{flag:'🇨🇳',label:'中文'} };
   const m = META[lang] || META.en;
   const fl = document.getElementById('langFlag');   if(fl) fl.textContent = m.flag;
   const lb = document.getElementById('langLabel');  if(lb) lb.textContent = m.label;
