@@ -6,6 +6,7 @@
 <title>Fatemeh ♥️</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=DM+Sans:wght@200;300;400&family=Alex+Brush&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700&family=Tajawal:wght@300;400;500;700&family=Nunito:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 /* ── RESET & ROOT ── */
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
@@ -1051,6 +1052,24 @@ footer::before {
   0%   { transform: translate(-50%,-50%) scale(0.3); opacity: 0.88; border-width: 2px; }
   100% { transform: translate(-50%,-50%) scale(4.2); opacity: 0;    border-width: 0.5px; }
 }
+/* ── multi-language fonts & layout ── */
+body[data-lang="fa"],body[data-lang="fa"] h1,body[data-lang="fa"] h2,body[data-lang="fa"] p,body[data-lang="fa"] span,body[data-lang="fa"] button,body[data-lang="fa"] a{font-family:'Vazirmatn',sans-serif!important;}
+body[data-lang="ar"],body[data-lang="ar"] h1,body[data-lang="ar"] h2,body[data-lang="ar"] p,body[data-lang="ar"] span,body[data-lang="ar"] button,body[data-lang="ar"] a{font-family:'Tajawal',sans-serif!important;}
+body[data-lang="ru"],body[data-lang="ru"] h1,body[data-lang="ru"] h2,body[data-lang="ru"] p,body[data-lang="ru"] span,body[data-lang="ru"] button,body[data-lang="ru"] a{font-family:'Nunito',sans-serif!important;}
+[dir="rtl"] .hero{direction:rtl;}
+[dir="rtl"] .hero-text{text-align:right;}
+[dir="rtl"] .hero-cta{justify-content:flex-end;}
+[dir="rtl"] .story-text{text-align:right;}
+[dir="rtl"] .section-header{text-align:right;}
+[dir="rtl"] .player-left{text-align:right;}
+[dir="rtl"] .footer-copy{direction:rtl;}
+[dir="rtl"] .nav-links{flex-direction:row-reverse;}
+/* lang switcher */
+.lang-switcher{display:flex;gap:6px;align-items:center;margin-left:auto;}
+.lang-btn{background:transparent;border:1.5px solid rgba(160,100,220,0.35);color:var(--lav);border-radius:20px;padding:4px 10px;font-size:0.72rem;font-family:'DM Sans',sans-serif;letter-spacing:.06em;cursor:pointer;transition:all .2s;}
+.lang-btn:hover{background:rgba(160,100,220,0.15);}
+.lang-btn.active{background:rgba(160,100,220,0.25);border-color:var(--lav);color:#fff;}
+
 </style>
 </head>
 <body>
@@ -1069,23 +1088,29 @@ footer::before {
 <nav id="mainNav">
   <div class="nav-logo">Fatemeh</div>
   <ul class="nav-links">
-    <li><a href="#gallery">Gallery</a></li>
-    <li><a href="#story">Story</a></li>
-    <li><a href="#music">Music</a></li>
+    <li><a href="#gallery" id="navGallery">Gallery</a></li>
+    <li><a href="#story"   id="navStory">Story</a></li>
+    <li><a href="#music"   id="navMusic">Music</a></li>
   </ul>
+  <div class="lang-switcher">
+    <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+    <button class="lang-btn"        data-lang="fa" onclick="setLang('fa')">FA</button>
+    <button class="lang-btn"        data-lang="ru" onclick="setLang('ru')">RU</button>
+    <button class="lang-btn"        data-lang="ar" onclick="setLang('ar')">AR</button>
+  </div>
 </nav>
 
 <!-- HERO -->
 <section class="hero" id="home">
   <div class="hero-text">
-    <div class="hero-eyebrow">Happy Birthday</div>
-    <h1 class="hero-h1">To the most<br><em>radiant</em> soul</h1>
+    <div class="hero-eyebrow" id="heroEyebrow">Happy Birthday</div>
+    <h1 class="hero-h1" id="heroH1">To the most<br><em>radiant</em> soul</h1>
     <span class="hero-name-script">Fatemeh</span>
-    <p class="hero-desc">Every moment with you is a memory I'll treasure forever. You are grace, beauty, and light — all wrapped in one extraordinary person.</p>
+    <p class="hero-desc" id="heroDesc">Every moment with you is a memory I'll treasure forever. You are grace, beauty, and light — all wrapped in one extraordinary person.</p>
     <span class="hero-aom">𝓐𝓵𝓵 𝓸𝓯 𝓶𝓮 ♥️ 𝓕𝓪𝓽𝓮𝓶𝓮𝓱</span>
     <div class="hero-cta">
-      <button class="btn-primary" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">View Gallery</button>
-      <button class="btn-ghost" onclick="document.getElementById('music').scrollIntoView({behavior:'smooth'})">Play Our Song</button>
+      <button class="btn-primary" id="btnGallery" onclick="document.getElementById('gallery').scrollIntoView({behavior:'smooth'})">View Gallery</button>
+      <button class="btn-ghost" id="btnMusic" onclick="document.getElementById('music').scrollIntoView({behavior:'smooth'})">Play Our Song</button>
     </div>
   </div>
 
@@ -1096,17 +1121,17 @@ footer::before {
       <img id="heroImg" src="" alt="Fatemeh">
       <div class="badge badge-1">
         <span class="badge-icon">🎂</span>
-        <div class="badge-text"><strong>Birthday Girl</strong>Chapter 24</div>
+        <div class="badge-text"><strong id="badge1T">Birthday Girl</strong><span id="badge1S">Chapter 24</span></div>
       </div>
       <div class="badge badge-2">
         <span class="badge-icon">✨</span>
-        <div class="badge-text"><strong>Happy Birthday</strong>my love ♥️</div>
+        <div class="badge-text"><strong id="badge2T">Happy Birthday</strong><span id="badge2S">my love ♥️</span></div>
       </div>
     </div>
   </div>
 
   <div class="scroll-ind">
-    <span>Scroll</span>
+    <span id="scrollLbl">Scroll</span>
     <div class="scroll-line"></div>
   </div>
 </section>
@@ -1115,9 +1140,9 @@ footer::before {
 <section class="player-section" id="music">
   <div class="player-layout">
     <div class="player-left reveal">
-      <span class="eyebrow">A Special Song</span>
-      <h2>Our<br><em style="font-style:italic;color:var(--lav);">Melody</em></h2>
-      <p style="margin-top:14px;">A handpicked moment from Tavalodet Mobarak — a Persian birthday classic that captures everything this day feels like.</p>
+      <span class="eyebrow" id="musicEyebrow">A Special Song</span>
+      <h2 id="musicH2">Our<br><em style="font-style:italic;color:var(--lav);">Melody</em></h2>
+      <p style="margin-top:14px;" id="musicDesc">A handpicked moment from Tavalodet Mobarak — a Persian birthday classic that captures everything this day feels like.</p>
     </div>
     <div class="player-card reveal" style="transition-delay:0.15s">
       <div class="snow-layer" id="snowLayer"></div>
@@ -1155,14 +1180,14 @@ footer::before {
 <!-- GALLERY -->
 <section class="section gallery-section" id="gallery">
   <div class="section-header reveal">
-    <span class="eyebrow">Memories &amp; Moments</span>
-    <h2 class="section-title">Her <em>Beautiful</em> World</h2>
+    <span class="eyebrow" id="galEyebrow">Memories &amp; Moments</span>
+    <h2 class="section-title" id="galH2">Her <em>Beautiful</em> World</h2>
   </div>
   <div class="gallery-filters reveal" style="transition-delay:0.1s">
-    <button class="filter-btn active" data-filter="all">All</button>
-    <button class="filter-btn" data-filter="birthday">Birthday</button>
-    <button class="filter-btn" data-filter="travel">Travel</button>
-    <button class="filter-btn" data-filter="portraits">Portraits</button>
+    <button class="filter-btn active" data-filter="all" id="fAll">All</button>
+    <button class="filter-btn" data-filter="birthday" id="fBday">Birthday</button>
+    <button class="filter-btn" data-filter="travel" id="fTravel">Travel</button>
+    <button class="filter-btn" data-filter="portraits" id="fPortraits">Portraits</button>
   </div>
   <div class="gallery-grid" id="galleryGrid"></div>
 </section>
@@ -1176,12 +1201,12 @@ footer::before {
       <img id="storyImg3" src="" alt="">
     </div>
     <div class="story-text reveal" style="transition-delay:0.2s">
-      <span class="eyebrow">A Letter</span>
-      <blockquote>"You make every ordinary moment feel like it was plucked from a dream."</blockquote>
-      <p>I have watched you stand with quiet confidence at the Grand Mosque, laugh under Moscow snowflakes, and hold that "24" cake like it was the beginning of everything — because it is.</p>
-      <p>You carry whole cities inside your eyes. You are the Mona Lisa and the miracle garden and the skyline all at once. And somehow, impossibly, you are mine.</p>
-      <p>Happy birthday, love. Every year with you is a privilege.</p>
-      <span class="story-sig">With all my love ♥️</span>
+      <span class="eyebrow" id="storyEyebrow">A Letter</span>
+      <blockquote id="storyQuote">"You make every ordinary moment feel like it was plucked from a dream."</blockquote>
+      <p id="storyP1">I have watched you stand with quiet confidence at the Grand Mosque, laugh under Moscow snowflakes, and hold that "24" cake like it was the beginning of everything — because it is.</p>
+      <p id="storyP2">You carry whole cities inside your eyes. You are the Mona Lisa and the miracle garden and the skyline all at once. And somehow, impossibly, you are mine.</p>
+      <p id="storyP3">Happy birthday, love. Every year with you is a privilege.</p>
+      <span class="story-sig" id="storySig">With all my love ♥️</span>
       <span class="story-aom" style="font-family:'Alex Brush',cursive;font-size:1.6rem;color:var(--lav);display:block;margin-top:12px;position:relative;">𝓐𝓵𝓵 𝓸𝓯 𝓶𝓮 ♥️ 𝓕𝓪𝓽𝓮𝓶𝓮𝓱</span>
     </div>
   </div>
@@ -1190,8 +1215,8 @@ footer::before {
 <!-- FEATURES -->
 <section class="section features-section">
   <div class="section-header reveal" style="text-align:center">
-    <span class="eyebrow">Chapter Twenty-Four</span>
-    <h2 class="section-title">Her <em>World</em></h2>
+    <span class="eyebrow" id="featEyebrow">Chapter Twenty-Four</span>
+    <h2 class="section-title" id="featH2">Her <em>World</em></h2>
   </div>
   <div class="features-grid" id="featuresGrid"></div>
 </section>
@@ -1202,7 +1227,7 @@ footer::before {
   <div class="footer-hearts">♥️ ♥️ ♥️</div>
   <span class="footer-aom">𝓐𝓵𝓵 𝓸𝓯 𝓶𝓮 ♥️ 𝓕𝓪𝓽𝓮𝓶𝓮𝓱</span>
   <div class="footer-divider"></div>
-  <div class="footer-copy">Made with love · Happy Birthday ✨</div>
+  <div class="footer-copy" id="footerCopy">Made with love · Happy Birthday ✨</div>
 </footer>
 
 <!-- LIGHTBOX -->
@@ -1595,6 +1620,171 @@ function burst(){
     },i*35);
   }
 }
+
+// ── MULTI-LANGUAGE ────────────────────────────────────────────────────────────
+const TRANSLATIONS = {
+  en: {
+    navGallery:'Gallery', navStory:'Story', navMusic:'Music',
+    heroEyebrow:'Happy Birthday',
+    heroH1:'To the most<br><em>radiant</em> soul',
+    heroDesc:"Every moment with you is a memory I'll treasure forever. You are grace, beauty, and light — all wrapped in one extraordinary person.",
+    btnGallery:'View Gallery', btnMusic:'Play Our Song',
+    badge1T:'Birthday Girl', badge1S:'Chapter 24',
+    badge2T:'Happy Birthday', badge2S:'my love ♥️',
+    scroll:'Scroll',
+    musicEyebrow:'A Special Song',
+    musicH2:'Our<br><em style="font-style:italic;color:var(--lav);">Melody</em>',
+    musicDesc:'A handpicked moment from Tavalodet Mobarak — a Persian birthday classic that captures everything this day feels like.',
+    galEyebrow:'Memories &amp; Moments',
+    galH2:'Her <em>Beautiful</em> World',
+    fAll:'All', fBday:'Birthday', fTravel:'Travel', fPortraits:'Portraits',
+    storyEyebrow:'A Letter',
+    storyQuote:'“You make every ordinary moment feel like it was plucked from a dream.”',
+    storyP1:'I have watched you stand with quiet confidence at the Grand Mosque, laugh under Moscow snowflakes, and hold that “24” cake like it was the beginning of everything — because it is.',
+    storyP2:'You carry whole cities inside your eyes. You are the Mona Lisa and the miracle garden and the skyline all at once. And somehow, impossibly, you are mine.',
+    storyP3:'Happy birthday, love. Every year with you is a privilege.',
+    storySig:'With all my love ♥️',
+    featEyebrow:'Chapter Twenty-Four',
+    featH2:'Her <em>World</em>',
+    footerCopy:'Made with love · Happy Birthday ✨'
+  },
+  fa: {
+    navGallery:'گالری', navStory:'داستان', navMusic:'موسیقی',
+    heroEyebrow:'تولدت مبارک',
+    heroH1:'به زیباترین<br><em>روح</em> دنیا',
+    heroDesc:'هر لحظه با تو خاطره‌ای است که برای همیشه در قلبم می‌ماند. تو زیبایی، لطافت و نور هستی — همه در یک انسان فوق‌العاده.',
+    btnGallery:'مشاهده گالری', btnMusic:'پخش آهنگ ما',
+    badge1T:'دختر تولدی', badge1S:'فصل ۲۴',
+    badge2T:'تولدت مبارک', badge2S:'عشقم ♥️',
+    scroll:'اسکرول',
+    musicEyebrow:'یک آهنگ ویژه',
+    musicH2:'ملودی<br><em style="font-style:italic;color:var(--lav);">ما</em>',
+    musicDesc:'لحظه‌ای برگزیده از تولدت مبارک — کلاسیک تولد ایرانی که همه احساسات این روز را در خود دارد.',
+    galEyebrow:'خاطرات و لحظات',
+    galH2:'دنیای <em>زیبای</em> او',
+    fAll:'همه', fBday:'تولد', fTravel:'سفر', fPortraits:'پرتره',
+    storyEyebrow:'یک نامه',
+    storyQuote:'«تو هر لحظه عادی را به رویایی بدل می‌کنی.»',
+    storyP1:'تو را دیده‌ام که با اعتماد آرام در مسجد بزرگ ایستادی، زیر برف مسکو خندیدی، و آن کیک «۲۴» را گرفتی انگار شروع همه چیز بود — چون بود.',
+    storyP2:'شهرهای کاملی را در چشمانت حمل می‌کنی. تو مونالیزا و باغ معجزه و خط آسمان شهر همه با هم هستی. و به شکلی باورنکردنی، تو از من هستی.',
+    storyP3:'تولدت مبارک، عشقم. هر سال با تو یک امتیاز است.',
+    storySig:'با تمام عشقم ♥️',
+    featEyebrow:'فصل بیست و چهار',
+    featH2:'دنیای <em>او</em>',
+    footerCopy:'ساخته شده با عشق · تولدت مبارک ✨'
+  },
+  ru: {
+    navGallery:'Галерея', navStory:'История', navMusic:'Музыка',
+    heroEyebrow:'С Днём Рождения',
+    heroH1:'Самой<br><em>сияющей</em> душе',
+    heroDesc:'Каждый миг с тобой — это воспоминание, которое я буду хранить вечно. Ты — изящество, красота и свет — всё воплощеное в одном удивительном человеке.',
+    btnGallery:'Смотреть галерею', btnMusic:'Слушать нашу песню',
+    badge1T:'Именинница', badge1S:'Глава 24',
+    badge2T:'С Днём Рождения', badge2S:'моя любовь ♥️',
+    scroll:'Листай',
+    musicEyebrow:'Особая Песня',
+    musicH2:'Наша<br><em style="font-style:italic;color:var(--lav);">Мелодия</em>',
+    musicDesc:'Особо подобранный момент из «Тавалодет Мобарак» — персидской классике о دне рождения, в которой всё чувство этого дня.',
+    galEyebrow:'Воспоминания и Моменты',
+    galH2:'Её <em>Прекрасный</em> Мир',
+    fAll:'Все', fBday:'День рождения', fTravel:'Путешествия', fPortraits:'Портреты',
+    storyEyebrow:'Письмо',
+    storyQuote:'«Ты превращаешь каждый обычный момент в мечту.»',
+    storyP1:'Я видел, как ты стояла с тихой уверенностью у Большой Мечети, смеялась под московским снегом, и держала тот торт «24», словно это было начало всего — потому что так и было.',
+    storyP2:'Ты носишь целые города внутри своих глаз. Ты — Мона Лиза, и сад чудес, и городской горизонт вместе. И каким-то невероятным образом, ты — моя.',
+    storyP3:'С Днём Рождения, любовь. Каждый год с тобой — это привилегия.',
+    storySig:'С любовью ♥️',
+    featEyebrow:'Глава Двадцать Четыре',
+    featH2:'Её <em>Мир</em>',
+    footerCopy:'Сделано с любовью · С Днём Рождения ✨'
+  },
+  ar: {
+    navGallery:'المعرض', navStory:'القصة', navMusic:'الموسيقى',
+    heroEyebrow:'عيد ميلاد سعيد',
+    heroH1:'إلى أجمل<br><em>روح</em> في الوجود',
+    heroDesc:'كل لحظة معكِ ذكرى سأحتفظ بها إلى الأبد. أنتِ الرقي والجمال والنور — كل ذلك في شخص واحد استثنائي.',
+    btnGallery:'عرض المعرض', btnMusic:'تشغيل أغنيتنا',
+    badge1T:'فتاة العيد', badge1S:'الفصل ٢٤',
+    badge2T:'عيد ميلاد سعيد', badge2S:'يا حبيبتي ♥️',
+    scroll:'مرّر',
+    musicEyebrow:'أغنية خاصة',
+    musicH2:'لحننا<br><em style="font-style:italic;color:var(--lav);">المميز</em>',
+    musicDesc:'لحظة مختارة بعناية من «تولدت مبارک» — كلاسيكية عيد الميلاد الفارسية التي تجسّد كل ما يحمله هذا اليوم.',
+    galEyebrow:'ذكريات ولحظات',
+    galH2:'عالمها <em>الجميل</em>',
+    fAll:'الكل', fBday:'عيد الميلاد', fTravel:'السفر', fPortraits:'صور',
+    storyEyebrow:'رسالة',
+    storyQuote:'«أنتِ تجعلين كل لحظة عادية تبدو كأنها انتُزعت من حلم.»',
+    storyP1:'رأيتكِ تقفين بثقة هادئة عند المسجد الكبير، وتضحكين تحت ثلج موسكو، وتمسكين تلك الكعكة «٢٤» كأنها كانت بداية كل شيء — لأنها كانت كذلك.',
+    storyP2:'تحملين مدناً بأكملها داخل عينيكِ. أنتِ الموناليزا وحديقة المعجزات والأفق معاً. وبطريقة ما لا تصدّق، أنتِ لي.',
+    storyP3:'عيد ميلاد سعيد، حبيبتي. كل عام معكِ هو امتياز.',
+    storySig:'بكل حبي ♥️',
+    featEyebrow:'الفصل الرابع والعشرون',
+    featH2:'عالمها <em>المذهل</em>',
+    footerCopy:'صُنع بحب · عيد ميلاد سعيد ✨'
+  }
+};
+
+function setLang(lang) {
+  const t = TRANSLATIONS[lang];
+  if (!t) return;
+  const isRtl = lang === 'fa' || lang === 'ar';
+  document.documentElement.lang = lang;
+  document.documentElement.dir = isRtl ? 'rtl' : 'ltr';
+  document.body.setAttribute('data-lang', lang);
+
+  const s = (id) => document.getElementById(id);
+  const set = (id, v) => { const el = s(id); if(el) el.textContent = v; };
+  const setH = (id, v) => { const el = s(id); if(el) el.innerHTML = v; };
+
+  set('navGallery', t.navGallery);
+  set('navStory',   t.navStory);
+  set('navMusic',   t.navMusic);
+  set('heroEyebrow', t.heroEyebrow);
+  setH('heroH1',    t.heroH1);
+  set('heroDesc',   t.heroDesc);
+  set('btnGallery', t.btnGallery);
+  set('btnMusic',   t.btnMusic);
+  set('badge1T',    t.badge1T);
+  set('badge1S',    t.badge1S);
+  set('badge2T',    t.badge2T);
+  set('badge2S',    t.badge2S);
+  set('scrollLbl',  t.scroll);
+  set('musicEyebrow', t.musicEyebrow);
+  setH('musicH2',   t.musicH2);
+  set('musicDesc',  t.musicDesc);
+  set('galEyebrow', t.galEyebrow);
+  setH('galH2',     t.galH2);
+  set('fAll',       t.fAll);
+  set('fBday',      t.fBday);
+  set('fTravel',    t.fTravel);
+  set('fPortraits', t.fPortraits);
+  set('storyEyebrow', t.storyEyebrow);
+  set('storyQuote', t.storyQuote);
+  set('storyP1',    t.storyP1);
+  set('storyP2',    t.storyP2);
+  set('storyP3',    t.storyP3);
+  set('storySig',   t.storySig);
+  set('featEyebrow', t.featEyebrow);
+  setH('featH2',    t.featH2);
+  set('footerCopy', t.footerCopy);
+
+  // update active button
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.lang === lang);
+  });
+
+  // persist
+  try { localStorage.setItem('fa-lang', lang); } catch(e){}
+}
+
+// restore saved language on load
+(function(){
+  try {
+    const saved = localStorage.getItem('fa-lang');
+    if (saved && saved !== 'en') setLang(saved);
+  } catch(e){}
+})();
 
 // ── global purple water-drop click / tap effect ──
 (function(){
