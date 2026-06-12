@@ -1128,16 +1128,17 @@ footer::before {
 .pass-shake{animation:passShake 0.44s ease;}
 @keyframes passOut{to{opacity:0;transform:scale(0.97);pointer-events:none;}}
 #passOverlay.closing{animation:passOut 0.5s ease forwards;}
-/* verify states */
-.pass-btn{position:relative;overflow:hidden;}
-.pass-btn.verifying{pointer-events:none;opacity:0.88;color:transparent!important;}
-.pass-btn.verifying::after{content:'';position:absolute;top:50%;left:50%;width:20px;height:20px;margin:-10px 0 0 -10px;border:2.5px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:passSpin 0.65s linear infinite;}
-@keyframes passSpin{to{transform:rotate(360deg);}}
-.pass-btn.pass-ok{background:linear-gradient(135deg,#2da05c,#52c87e)!important;pointer-events:none;color:transparent!important;box-shadow:0 8px 26px rgba(45,160,92,0.5)!important;}
-.pass-btn.pass-ok::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:1.3rem;font-weight:700;animation:checkPop 0.4s cubic-bezier(0.34,1.56,0.64,1) both;}
-@keyframes checkPop{from{transform:translate(-50%,-50%) scale(0) rotate(-20deg);}to{transform:translate(-50%,-50%) scale(1) rotate(0);}}
-.pass-btn.pass-no{background:linear-gradient(135deg,#b02050,#d84070)!important;pointer-events:none;color:transparent!important;box-shadow:0 8px 24px rgba(176,32,80,0.45)!important;}
-.pass-btn.pass-no::after{content:'✕';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-size:1.2rem;}
+/* swipe-to-unlock */
+.swipe-track{position:relative;height:54px;border-radius:27px;background:rgba(122,64,176,0.08);border:1.5px solid rgba(122,64,176,0.2);overflow:hidden;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;}
+.swipe-fill{position:absolute;top:0;left:0;bottom:0;width:0;background:linear-gradient(90deg,rgba(122,64,176,0.22),rgba(144,96,204,0.38));border-radius:27px;pointer-events:none;}
+.swipe-thumb{position:absolute;top:5px;left:5px;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--lav),var(--lav2));box-shadow:0 4px 14px rgba(122,64,176,0.42);display:flex;align-items:center;justify-content:center;color:#fff;z-index:2;cursor:grab;}
+.swipe-thumb:active{cursor:grabbing;}
+.swipe-thumb svg{pointer-events:none;}
+.swipe-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.76rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;pointer-events:none;z-index:1;}
+.swipe-track.sw-ok .swipe-fill{background:linear-gradient(90deg,#2da05c,#52c87e)!important;}
+.swipe-track.sw-ok .swipe-thumb{background:linear-gradient(135deg,#2da05c,#52c87e);box-shadow:0 4px 18px rgba(45,160,92,0.5);}
+.swipe-track.sw-no .swipe-thumb{background:linear-gradient(135deg,#b02050,#d84070);box-shadow:0 4px 14px rgba(176,32,80,0.45);}
+.swipe-track.sw-no .swipe-fill{background:linear-gradient(90deg,rgba(176,32,80,0.22),rgba(216,64,112,0.38))!important;}
 #passCard.glow-ok{animation:cardOkGlow 0.75s ease forwards;}
 @keyframes cardOkGlow{50%{box-shadow:0 0 0 5px rgba(45,160,92,0.4),0 28px 70px rgba(45,160,92,0.25),inset 0 1px 0 rgba(255,255,255,0.9);}100%{box-shadow:0 28px 70px rgba(100,40,180,0.13),0 4px 18px rgba(120,60,180,0.08),inset 0 1px 0 rgba(255,255,255,0.9);}}
 
@@ -1187,7 +1188,13 @@ nav{direction:ltr!important;}
       <input class="pass-single" id="passInput" type="password" placeholder="Your secret word…" autocomplete="off" spellcheck="false">
     </div>
     <div class="pass-err hidden" id="passErr">Incorrect passkey — try again</div>
-    <button class="pass-btn" id="passBtn">Unlock ✨</button>
+    <div class="swipe-track" id="swipeTrack">
+      <div class="swipe-fill" id="swipeFill"></div>
+      <div class="swipe-thumb" id="swipeThumb">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      </div>
+      <span class="swipe-label" id="swipeLabel">Slide to unlock</span>
+    </div>
   </div>
 </div>
 
@@ -2086,55 +2093,121 @@ document.addEventListener('click', function(e){
 
 <script>
 (function(){
-  const KEY = '1414';
+  const KEY    = '1414';
   const overlay = document.getElementById('passOverlay');
   const card    = document.getElementById('passCard');
   const err     = document.getElementById('passErr');
-  const btn     = document.getElementById('passBtn');
   const input   = document.getElementById('passInput');
+  const track   = document.getElementById('swipeTrack');
+  const fill    = document.getElementById('swipeFill');
+  const thumb   = document.getElementById('swipeThumb');
+  const lbl     = document.getElementById('swipeLabel');
+
+  const PAD = 5, SZ = 44;
+  let dragging = false, startX = 0, curX = 0;
 
   document.body.style.overflow = 'hidden';
   input.focus();
-
   input.addEventListener('input', () => err.classList.add('hidden'));
-  input.addEventListener('keydown', e => { if(e.key === 'Enter') unlock(); });
-  btn.addEventListener('click', unlock);
 
-  function unlock() {
+  function maxSlide(){ return track.offsetWidth - SZ - PAD * 2; }
+
+  function startDrag(x){
+    dragging = true;
+    startX = x - curX;
+    thumb.style.transition = 'none';
+    fill.style.transition = 'none';
+    lbl.style.transition = 'none';
+  }
+  function moveDrag(x){
+    if(!dragging) return;
+    const max = maxSlide();
+    curX = Math.max(0, Math.min(max, x - startX));
+    thumb.style.left = (curX + PAD) + 'px';
+    fill.style.width  = (curX + SZ + PAD) + 'px';
+    lbl.style.opacity = Math.max(0, 1 - (curX / max) * 2.2);
+    if(curX >= max * 0.9) endDrag();
+  }
+  function endDrag(){
+    if(!dragging) return;
+    dragging = false;
+    const max = maxSlide();
+    if(curX >= max * 0.88){
+      // complete slide → run to end then verify
+      thumb.style.transition = 'left 0.22s ease';
+      fill.style.transition  = 'width 0.22s ease';
+      thumb.style.left = (max + PAD) + 'px';
+      fill.style.width = (max + SZ + PAD) + 'px';
+      lbl.style.opacity = '0';
+      setTimeout(verify, 240);
+    } else {
+      springBack();
+    }
+  }
+  function springBack(){
+    thumb.style.transition = 'left 0.42s cubic-bezier(0.34,1.18,0.64,1)';
+    fill.style.transition  = 'width 0.42s cubic-bezier(0.34,1.18,0.64,1)';
+    lbl.style.transition   = 'opacity 0.3s';
+    thumb.style.left  = PAD + 'px';
+    fill.style.width  = '0';
+    lbl.style.opacity = '1';
+    curX = 0;
+  }
+
+  // Enter key → animate thumb across then verify
+  input.addEventListener('keydown', e => {
+    if(e.key !== 'Enter') return;
+    const max = maxSlide();
+    curX = max;
+    thumb.style.transition = 'left 0.32s ease';
+    fill.style.transition  = 'width 0.32s ease';
+    lbl.style.transition   = 'opacity 0.2s';
+    thumb.style.left  = (max + PAD) + 'px';
+    fill.style.width  = (max + SZ + PAD) + 'px';
+    lbl.style.opacity = '0';
+    dragging = false;
+    setTimeout(verify, 340);
+  });
+
+  function verify(){
     const entered = input.value.trim().toLowerCase();
     input.disabled = true;
-    btn.classList.add('verifying');
-
-    setTimeout(() => {
-      btn.classList.remove('verifying');
-
-      if (entered === KEY) {
-        btn.classList.add('pass-ok');
-        card.classList.add('glow-ok');
+    if(entered === KEY){
+      track.classList.add('sw-ok');
+      card.classList.add('glow-ok');
+      setTimeout(() => {
+        window._passUnlocked = true;
+        overlay.classList.add('closing');
         setTimeout(() => {
-          window._passUnlocked = true;
-          overlay.classList.add('closing');
-          setTimeout(() => {
-            overlay.style.display = 'none';
-            document.body.style.overflow = '';
-            if (typeof tryAutoPlay === 'function') tryAutoPlay();
-          }, 520);
-        }, 800);
-      } else {
-        btn.classList.add('pass-no');
-        err.classList.remove('hidden');
-        card.classList.remove('pass-shake');
-        void card.offsetWidth;
-        card.classList.add('pass-shake');
-        setTimeout(() => {
-          btn.classList.remove('pass-no');
-          input.disabled = false;
-          input.value = '';
-          input.focus();
-        }, 700);
-      }
-    }, 750);
+          overlay.style.display = 'none';
+          document.body.style.overflow = '';
+          if(typeof tryAutoPlay === 'function') tryAutoPlay();
+        }, 520);
+      }, 720);
+    } else {
+      track.classList.add('sw-no');
+      err.classList.remove('hidden');
+      card.classList.remove('pass-shake');
+      void card.offsetWidth;
+      card.classList.add('pass-shake');
+      setTimeout(() => {
+        track.classList.remove('sw-no');
+        input.disabled = false;
+        input.value = '';
+        input.focus();
+        springBack();
+      }, 800);
+    }
   }
+
+  // Mouse events
+  thumb.addEventListener('mousedown', e => { e.preventDefault(); startDrag(e.clientX); });
+  document.addEventListener('mousemove', e => moveDrag(e.clientX));
+  document.addEventListener('mouseup',   () => { if(dragging) endDrag(); });
+  // Touch events
+  thumb.addEventListener('touchstart',  e => { e.preventDefault(); startDrag(e.touches[0].clientX); }, {passive:false});
+  document.addEventListener('touchmove', e => { if(dragging){ e.preventDefault(); moveDrag(e.touches[0].clientX); } }, {passive:false});
+  document.addEventListener('touchend',  () => { if(dragging) endDrag(); });
 })();
 </script>
 
