@@ -1141,6 +1141,24 @@ footer::before {
 .swipe-track.sw-no .swipe-fill{background:linear-gradient(90deg,rgba(176,32,80,0.22),rgba(216,64,112,0.38))!important;}
 #passCard.glow-ok{animation:cardOkGlow 0.75s ease forwards;}
 @keyframes cardOkGlow{50%{box-shadow:0 0 0 5px rgba(45,160,92,0.4),0 28px 70px rgba(45,160,92,0.25),inset 0 1px 0 rgba(255,255,255,0.9);}100%{box-shadow:0 28px 70px rgba(100,40,180,0.13),0 4px 18px rgba(120,60,180,0.08),inset 0 1px 0 rgba(255,255,255,0.9);}}
+/* ── swipe extra animations ── */
+.swipe-thumb{animation:thumbNudge 3.2s ease-in-out 2.2s infinite;}
+@keyframes thumbNudge{0%,55%,100%{transform:translateX(0);box-shadow:0 4px 14px rgba(122,64,176,0.42);}30%{transform:translateX(11px);box-shadow:0 6px 26px rgba(122,64,176,0.72);}}
+.swipe-label{animation:lblPulse 3.2s ease-in-out 2.2s infinite;}
+@keyframes lblPulse{0%,55%,100%{opacity:1;}30%{opacity:0.45;}}
+.swipe-track.sw-dragging .swipe-thumb,.swipe-track.sw-dragging .swipe-label{animation:none!important;}
+.swipe-track.sw-verify .swipe-thumb{animation:none!important;}
+.swipe-track.sw-verify .swipe-thumb svg{opacity:0;transition:opacity .15s;}
+.swipe-track.sw-verify .swipe-thumb::after{content:'';position:absolute;inset:-3px;border-radius:50%;border:2.5px solid rgba(255,255,255,0.25);border-top-color:#fff;animation:swSpin 0.6s linear infinite;}
+@keyframes swSpin{to{transform:rotate(360deg);}}
+.swipe-track.sw-verify .swipe-fill{animation:fillPulse 0.72s ease-in-out infinite;}
+@keyframes fillPulse{0%,100%{opacity:1;}50%{opacity:0.6;}}
+.swipe-track.sw-ok .swipe-thumb svg,.swipe-track.sw-no .swipe-thumb svg{opacity:0;}
+.swipe-track.sw-ok .swipe-thumb::after{content:'✓';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);color:#fff;font-size:1.3rem;font-weight:700;animation:iconPop 0.44s 0.06s cubic-bezier(0.34,1.56,0.64,1) forwards;}
+.swipe-track.sw-no .swipe-thumb::after{content:'✕';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) scale(0);color:#fff;font-size:1.15rem;font-weight:600;animation:iconPop 0.3s ease forwards;}
+@keyframes iconPop{to{transform:translate(-50%,-50%) scale(1);}}
+.swipe-track.sw-ok .swipe-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.5) 50%,transparent 100%);animation:fillShimmer 0.7s ease forwards;}
+@keyframes fillShimmer{0%{transform:translateX(-100%);}100%{transform:translateX(200%);}}
 
 
 body[data-lang="fa"],body[data-lang="fa"] h1,body[data-lang="fa"] h2,body[data-lang="fa"] p,body[data-lang="fa"] span,body[data-lang="fa"] button,body[data-lang="fa"] a{font-family:'Vazirmatn',sans-serif!important;}
@@ -2115,6 +2133,7 @@ document.addEventListener('click', function(e){
   function startDrag(x){
     dragging = true;
     startX = x - curX;
+    track.classList.add('sw-dragging');
     thumb.style.transition = 'none';
     fill.style.transition = 'none';
     lbl.style.transition = 'none';
@@ -2131,15 +2150,17 @@ document.addEventListener('click', function(e){
   function endDrag(){
     if(!dragging) return;
     dragging = false;
+    track.classList.remove('sw-dragging');
     const max = maxSlide();
     if(curX >= max * 0.88){
-      // complete slide → run to end then verify
+      // complete slide → run to end, show verifying, then verify
       thumb.style.transition = 'left 0.22s ease';
       fill.style.transition  = 'width 0.22s ease';
       thumb.style.left = (max + PAD) + 'px';
       fill.style.width = (max + SZ + PAD) + 'px';
       lbl.style.opacity = '0';
-      setTimeout(verify, 240);
+      setTimeout(() => { track.classList.add('sw-verify'); }, 220);
+      setTimeout(verify, 900);
     } else {
       springBack();
     }
@@ -2166,12 +2187,14 @@ document.addEventListener('click', function(e){
     fill.style.width  = (max + SZ + PAD) + 'px';
     lbl.style.opacity = '0';
     dragging = false;
-    setTimeout(verify, 340);
+    setTimeout(() => { track.classList.add('sw-verify'); }, 320);
+    setTimeout(verify, 1000);
   });
 
   function verify(){
     const entered = input.value.trim().toLowerCase();
     input.disabled = true;
+    track.classList.remove('sw-verify');
     if(entered === KEY){
       track.classList.add('sw-ok');
       card.classList.add('glow-ok');
