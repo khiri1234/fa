@@ -695,7 +695,10 @@ nav.scrolled {
   transform: translateY(24px);
   transition: opacity 0.6s, transform 0.6s, box-shadow 0.4s;
   background: var(--card);
+  animation: goldSilverPulse 3.6s ease-in-out infinite;
 }
+.gallery-item:nth-child(even) { animation-delay: -1.8s; }
+.gallery-item:nth-child(3n)   { animation-delay: -0.9s; }
 .gallery-item.vis {
   opacity: 1;
   transform: translateY(0);
@@ -791,7 +794,10 @@ nav.scrolled {
   object-fit: cover;
   box-shadow: 0 20px 50px rgba(0,0,0,0.4);
   transition: transform 0.5s;
+  animation: goldSilverPulse 3.6s ease-in-out infinite;
 }
+.story-img-grid img:nth-child(even) { animation-delay: -1.8s; }
+.story-img-grid img:nth-child(3n)   { animation-delay: -0.9s; }
 .story-img-grid img:hover { transform: scale(1.02); }
 .story-img-grid img:nth-child(1) { grid-row: span 2; height: 100%; }
 .story-img-grid img:nth-child(2) { height: 180px; }
@@ -842,7 +848,10 @@ nav.scrolled {
   opacity: 0;
   transform: translateY(20px);
   transition: opacity 0.7s, transform 0.7s, box-shadow 0.4s;
+  animation: goldSilverPulse 3.6s ease-in-out infinite;
 }
+.feature-card:nth-child(even) { animation-delay: -1.8s; }
+.feature-card:nth-child(3n)   { animation-delay: -0.9s; }
 .feature-card.vis { opacity: 1; transform: translateY(0); }
 .feature-card.vis { opacity: 1; transform: translateY(0); }
 .feature-card:hover { box-shadow: 0 40px 80px rgba(0,0,0,0.6); }
