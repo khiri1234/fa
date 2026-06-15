@@ -708,19 +708,6 @@ nav.scrolled {
   transition: transform 0.6s cubic-bezier(0.25,0.46,0.45,0.94);
 }
 .gallery-item:hover img { transform: scale(1.06); }
-/* ── Louvre flythrough: slow zoom into face ── */
-.gallery-item.flythrough img {
-  transform-origin: 50% 20%;
-  transition: none;
-  animation: faceZoom 16s ease-in-out infinite;
-}
-.gallery-item.flythrough:hover img { animation-play-state: paused; }
-@keyframes faceZoom {
-  0%   { transform: scale(1);   }
-  55%  { transform: scale(4);   }
-  75%  { transform: scale(4);   }
-  100% { transform: scale(1);   }
-}
 .gallery-overlay {
   position: absolute; inset: 0;
   background: linear-gradient(to top, rgba(14,11,18,0.85) 0%, rgba(14,11,18,0.2) 50%, transparent 100%);
@@ -1521,7 +1508,7 @@ document.getElementById('storyImg3').src = IMGS['img7EC9'];
 const grid = document.getElementById('galleryGrid');
 galleryData.forEach((item,i)=>{
   const div = document.createElement('div');
-  div.className='gallery-item' + (item.brilliant ? ' brilliant' : '') + (item.k==='IMG_8492' ? ' flythrough' : '');
+  div.className='gallery-item' + (item.brilliant ? ' brilliant' : '');
   div.dataset.delay=i;
   div.dataset.filter=item.tag;
   div.dataset.idx=i;
