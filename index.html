@@ -710,15 +710,15 @@ nav.scrolled {
 .gallery-item:hover img { transform: scale(1.06); }
 /* ── Louvre flythrough: slow zoom into face ── */
 .gallery-item.flythrough img {
-  transform-origin: 50% 28%;
+  transform-origin: 50% 20%;
   transition: none;
   animation: faceZoom 16s ease-in-out infinite;
 }
 .gallery-item.flythrough:hover img { animation-play-state: paused; }
 @keyframes faceZoom {
   0%   { transform: scale(1);   }
-  55%  { transform: scale(2.6); }
-  75%  { transform: scale(2.6); }
+  55%  { transform: scale(4);   }
+  75%  { transform: scale(4);   }
   100% { transform: scale(1);   }
 }
 .gallery-overlay {
