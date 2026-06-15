@@ -1117,17 +1117,17 @@ footer::before {
   0%   { transform: translate(-50%,-50%) scale(0.3); opacity: 0.88; border-width: 2px; }
   100% { transform: translate(-50%,-50%) scale(4.2); opacity: 0;    border-width: 0.5px; }
 }
-/* ── tooth decoration ── */
-.tooth-row{display:flex;justify-content:center;gap:18px;margin-top:18px;}
-.tooth-icon{display:inline-flex;animation:toothBounce 2.4s ease-in-out infinite;filter:drop-shadow(0 2px 8px rgba(160,40,232,0.45));}
-.tooth-icon:nth-child(2){animation-delay:.4s;}
-.tooth-icon:nth-child(3){animation-delay:.8s;}
+/* ── dental row (tooth + instruments in one line) ── */
+.dental-row{display:flex;align-items:center;justify-content:center;gap:20px;margin-top:18px;flex-wrap:wrap;}
+.tooth-icon{display:inline-flex;font-size:1.5rem;animation:toothBounce 2.4s ease-in-out infinite;filter:drop-shadow(0 2px 8px rgba(160,40,232,0.45));}
+.dental-row .tooth-icon:nth-child(1){animation-delay:0s;}
+.dental-row .tooth-icon:nth-child(3){animation-delay:.5s;}
+.dental-row .tooth-icon:nth-child(5){animation-delay:1s;}
 @keyframes toothBounce{0%,100%{transform:translateY(0) rotate(-6deg);}50%{transform:translateY(-9px) rotate(6deg);}}
-/* ── dental instruments decoration ── */
-.instrument-row{display:flex;justify-content:center;gap:24px;margin-top:10px;}
 .instr-icon{display:inline-flex;animation:instrFloat 3.2s ease-in-out infinite;filter:drop-shadow(0 2px 10px rgba(160,40,232,0.5));}
-.instr-icon:nth-child(2){animation-delay:.65s;}
-.instr-icon:nth-child(3){animation-delay:1.3s;}
+.dental-row .instr-icon:nth-child(2){animation-delay:.3s;}
+.dental-row .instr-icon:nth-child(4){animation-delay:.8s;}
+.dental-row .instr-icon:nth-child(6){animation-delay:1.3s;}
 @keyframes instrFloat{0%,100%{transform:translateY(0) rotate(7deg);}50%{transform:translateY(-9px) rotate(-7deg);}}
 /* ── passkey overlay ── */
 #passOverlay{position:fixed;inset:0;z-index:99999;background:radial-gradient(ellipse at 38% 42%,#f5e8ff 0%,#e8d5f5 44%,#d4bff0 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;}
@@ -1400,28 +1400,26 @@ nav{direction:ltr!important;}
   <div class="section-header reveal" style="text-align:center">
     <span class="eyebrow" id="featEyebrow">Chapter Twenty-Four</span>
     <h2 class="section-title" id="featH2">Her <em>World</em></h2>
-    <div class="tooth-row">
+    <div class="dental-row">
       <span class="tooth-icon">🦷</span>
-      <span class="tooth-icon">🦷</span>
-      <span class="tooth-icon">🦷</span>
-    </div>
-    <div class="instrument-row">
       <span class="instr-icon" title="Dental Mirror">
-        <svg viewBox="0 0 36 80" width="36" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 36 80" width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="16" y1="40" x2="16" y2="78" stroke="#a040e8" stroke-width="5" stroke-linecap="round"/>
           <line x1="16" y1="37" x2="23" y2="20" stroke="#a040e8" stroke-width="3.5" stroke-linecap="round"/>
           <circle cx="23" cy="11" r="10" fill="rgba(160,40,232,0.14)" stroke="#a040e8" stroke-width="2.8"/>
           <circle cx="23" cy="11" r="5" fill="rgba(160,40,232,0.26)"/>
         </svg>
       </span>
+      <span class="tooth-icon">🦷</span>
       <span class="instr-icon" title="Dental Explorer">
-        <svg viewBox="0 0 26 80" width="30" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 26 80" width="28" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="13" y1="4" x2="13" y2="58" stroke="#a040e8" stroke-width="5" stroke-linecap="round"/>
           <path d="M13 58 C13 68 5 72 4 77" fill="none" stroke="#a040e8" stroke-width="3.5" stroke-linecap="round"/>
         </svg>
       </span>
+      <span class="tooth-icon">🦷</span>
       <span class="instr-icon" title="Dental Scaler">
-        <svg viewBox="0 0 26 80" width="30" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg viewBox="0 0 26 80" width="28" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="13" y1="4" x2="13" y2="54" stroke="#a040e8" stroke-width="5" stroke-linecap="round"/>
           <path d="M13 54 Q5 64 8 74 Q10 80 17 78" fill="none" stroke="#a040e8" stroke-width="3.5" stroke-linecap="round"/>
         </svg>
