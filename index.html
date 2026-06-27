@@ -1185,6 +1185,31 @@ footer::before {
 @keyframes iconPop{to{transform:translate(-50%,-50%) scale(1);}}
 .swipe-track.sw-ok .swipe-fill::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.5) 50%,transparent 100%);animation:fillShimmer 0.7s ease forwards;}
 @keyframes fillShimmer{0%{transform:translateX(-100%);}100%{transform:translateX(200%);}}
+/* ── Face ID confirmation ── */
+.faceid-wrap{display:none;flex-direction:column;align-items:center;gap:14px;padding:6px 0 2px;}
+#passCard.verifying .pass-input-wrap,#passCard.verifying .swipe-track{display:none;}
+#passCard.verifying .faceid-wrap{display:flex;animation:faceidIn 0.35s ease;}
+@keyframes faceidIn{from{opacity:0;transform:scale(0.82);}to{opacity:1;transform:scale(1);}}
+.faceid-brackets path{animation:bracketPulse 1.3s ease-in-out infinite;transition:stroke 0.25s;}
+@keyframes bracketPulse{0%,100%{opacity:0.5;}50%{opacity:1;}}
+.faceid-face{transition:opacity 0.25s;}
+.faceid-scanline{opacity:0;animation:scanSweep 1.05s ease-in-out infinite;}
+@keyframes scanSweep{0%{opacity:0;transform:translateY(-15px);}12%{opacity:0.95;}50%{opacity:0.95;transform:translateY(15px);}88%{opacity:0.95;}100%{opacity:0;transform:translateY(-15px);}}
+.faceid-check{opacity:0;stroke-dasharray:50;stroke-dashoffset:50;}
+.faceid-label{font-size:0.78rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);transition:color 0.25s;}
+.faceid-wrap.success .faceid-brackets path{stroke:#2da05c;animation:none;opacity:1;}
+.faceid-wrap.success .faceid-face{opacity:0;}
+.faceid-wrap.success .faceid-scanline{opacity:0;animation:none;}
+.faceid-wrap.success .faceid-check{opacity:1;animation:checkDraw 0.4s 0.05s cubic-bezier(0.34,1.56,0.64,1) forwards;}
+@keyframes checkDraw{to{stroke-dashoffset:0;}}
+.faceid-wrap.success{animation:faceidPop 0.42s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes faceidPop{0%{transform:scale(1);}45%{transform:scale(1.14);}100%{transform:scale(1);}}
+.faceid-wrap.success .faceid-label{color:#2da05c;font-weight:600;}
+.faceid-wrap.fail .faceid-brackets path{stroke:#b02050;animation:none;}
+.faceid-wrap.fail .faceid-face{opacity:0.35;}
+.faceid-wrap.fail .faceid-scanline{display:none;}
+.faceid-wrap.fail{animation:passShake 0.44s ease;}
+.faceid-wrap.fail .faceid-label{color:#b02050;}
 
 
 body[data-lang="fa"],body[data-lang="fa"] h1,body[data-lang="fa"] h2,body[data-lang="fa"] p,body[data-lang="fa"] span,body[data-lang="fa"] button,body[data-lang="fa"] a{font-family:'Vazirmatn',sans-serif!important;}
@@ -1238,6 +1263,25 @@ nav{direction:ltr!important;}
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </div>
       <span class="swipe-label" id="swipeLabel">Slide to unlock</span>
+    </div>
+    <div class="faceid-wrap" id="faceidWrap">
+      <svg class="faceid-svg" width="84" height="84" viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g class="faceid-brackets" stroke="#7a40b0" stroke-width="4" stroke-linecap="round" fill="none">
+          <path d="M4 24 V12 Q4 4 12 4 H24"/>
+          <path d="M60 4 H72 Q80 4 80 12 V24"/>
+          <path d="M80 60 V72 Q80 80 72 80 H60"/>
+          <path d="M24 80 H12 Q4 80 4 72 V60"/>
+        </g>
+        <g class="faceid-face" stroke="#7a40b0" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none">
+          <path d="M28 26 Q28 14 42 14 Q56 14 56 26 V44 Q56 54 47 57"/>
+          <line x1="29" y1="33" x2="29" y2="40"/>
+          <line x1="55" y1="33" x2="55" y2="40"/>
+          <path d="M33 49 Q42 55 51 49"/>
+        </g>
+        <line class="faceid-scanline" x1="8" y1="42" x2="76" y2="42" stroke="#a060e0" stroke-width="2.5"/>
+        <path class="faceid-check" d="M22 44 L35 57 L62 28" stroke="#2da05c" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <div class="faceid-label" id="faceidLabel">Scanning Face ID…</div>
     </div>
   </div>
 </div>
@@ -2158,6 +2202,8 @@ document.addEventListener('click', function(e){
   const fill    = document.getElementById('swipeFill');
   const thumb   = document.getElementById('swipeThumb');
   const lbl     = document.getElementById('swipeLabel');
+  const faceid    = document.getElementById('faceidWrap');
+  const faceidLbl = document.getElementById('faceidLabel');
 
   const PAD = 5, SZ = 44;
   let dragging = false, startX = 0, curX = 0;
@@ -2237,14 +2283,23 @@ document.addEventListener('click', function(e){
       track.classList.add('sw-ok');
       card.classList.add('glow-ok');
       setTimeout(() => {
-        window._passUnlocked = true;
-        overlay.classList.add('closing');
+        card.classList.add('verifying');
+        faceid.classList.remove('success','fail');
+        faceidLbl.textContent = 'Scanning Face ID…';
         setTimeout(() => {
-          overlay.style.display = 'none';
-          document.body.style.overflow = '';
-          if(typeof tryAutoPlay === 'function') tryAutoPlay();
-        }, 520);
-      }, 720);
+          faceid.classList.add('success');
+          faceidLbl.textContent = 'Face ID Confirmed';
+          setTimeout(() => {
+            window._passUnlocked = true;
+            overlay.classList.add('closing');
+            setTimeout(() => {
+              overlay.style.display = 'none';
+              document.body.style.overflow = '';
+              if(typeof tryAutoPlay === 'function') tryAutoPlay();
+            }, 520);
+          }, 850);
+        }, 950);
+      }, 400);
     } else {
       track.classList.add('sw-no');
       err.classList.remove('hidden');
