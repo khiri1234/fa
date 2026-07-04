@@ -1130,46 +1130,57 @@ footer::before {
 .dental-row .instr-icon:nth-child(6){animation-delay:1.3s;}
 @keyframes instrFloat{0%,100%{transform:translateY(0) rotate(7deg);}50%{transform:translateY(-9px) rotate(-7deg);}}
 /* ── passkey overlay ── */
-#passOverlay{position:fixed;inset:0;z-index:99999;background:radial-gradient(ellipse at 38% 42%,#f5e8ff 0%,#e8d5f5 44%,#d4bff0 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;}
-.pass-blob{position:absolute;border-radius:50%;pointer-events:none;filter:blur(64px);opacity:0.5;}
-.pass-blob-1{width:360px;height:360px;background:#c9a0f0;top:-100px;left:-90px;animation:blobDrift 14s ease-in-out infinite;}
-.pass-blob-2{width:280px;height:280px;background:#b4d0ff;bottom:-70px;right:-60px;animation:blobDrift 18s ease-in-out infinite reverse;}
-.pass-blob-3{width:220px;height:220px;background:#f4b8d8;top:52%;left:62%;animation:blobDrift 11s ease-in-out infinite 2.5s;}
-@keyframes blobDrift{0%,100%{transform:translate(0,0) scale(1);}33%{transform:translate(20px,-24px) scale(1.07);}66%{transform:translate(-16px,18px) scale(0.95);}}
-#passCard{position:relative;background:rgba(255,255,255,0.7);border:1px solid rgba(122,64,176,0.16);border-radius:32px;padding:54px 44px 44px;text-align:center;box-shadow:0 28px 70px rgba(100,40,180,0.13),0 4px 18px rgba(120,60,180,0.08),inset 0 1px 0 rgba(255,255,255,0.9);max-width:360px;width:90%;backdrop-filter:blur(28px);}
-.pass-deco{position:absolute;top:-20px;left:50%;transform:translateX(-50%);font-size:2.4rem;animation:passDecoFloat 3.2s ease-in-out infinite;filter:drop-shadow(0 4px 10px rgba(122,64,176,0.3));}
-@keyframes passDecoFloat{0%,100%{transform:translateX(-50%) translateY(0);}50%{transform:translateX(-50%) translateY(-8px);}}
-.pass-title{font-family:'Alex Brush',cursive;font-size:2.7rem;color:var(--lav);margin-bottom:2px;line-height:1.1;}
-.pass-sub{font-size:0.73rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:30px;}
-.pass-input-wrap{margin-bottom:10px;}
-.pass-single{width:100%;padding:15px 20px;border-radius:16px;border:1.5px solid rgba(122,64,176,0.22);background:rgba(255,255,255,0.88);color:var(--cream);font-size:1rem;text-align:center;letter-spacing:.22em;outline:none;box-sizing:border-box;font-family:'DM Sans',sans-serif;transition:border-color .22s,box-shadow .22s;box-shadow:inset 0 2px 6px rgba(100,40,160,0.06);}
-.pass-single:focus{border-color:var(--lav);box-shadow:0 0 0 3.5px rgba(122,64,176,0.13),inset 0 2px 6px rgba(100,40,160,0.06);}
-.pass-single::placeholder{color:rgba(30,10,58,0.28);letter-spacing:.04em;}
-.pass-err{font-size:0.73rem;color:#a01840;min-height:18px;margin-bottom:14px;transition:opacity .25s;}
+#passOverlay{position:fixed;inset:0;z-index:99999;background:linear-gradient(145deg,#d0adf0 0%,#dfc0f5 28%,#f5d0ea 62%,#f0b8d0 100%);display:flex;align-items:center;justify-content:center;overflow:hidden;}
+/* floating 3D icons */
+.pc-float{position:absolute;pointer-events:none;display:flex;align-items:center;justify-content:center;border-radius:16px;animation:pcFloat 3.5s ease-in-out infinite;box-shadow:0 8px 24px rgba(100,40,180,0.22);}
+.pc-float-profile{width:54px;height:54px;background:rgba(148,88,220,0.88);top:12%;left:8%;animation-delay:0s;}
+.pc-float-lock{width:54px;height:54px;background:rgba(170,128,235,0.88);top:9%;right:7%;animation-delay:-1.2s;}
+.pc-float-check{width:50px;height:50px;background:rgba(238,132,154,0.9);border-radius:50%;top:40%;right:5%;animation-delay:-2.4s;}
+@keyframes pcFloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+.pc-sparkle{position:absolute;pointer-events:none;color:rgba(200,158,50,0.95);animation:sparkTwinkle 3.8s ease-in-out infinite;text-shadow:0 0 8px rgba(255,210,70,0.6);}
+.pc-sp-1{top:17%;left:26%;font-size:1.3rem;animation-delay:0s;}
+.pc-sp-2{top:7%;right:20%;font-size:0.95rem;animation-delay:-1.5s;}
+.pc-sp-3{bottom:20%;left:12%;font-size:0.9rem;animation-delay:-2.9s;}
+.pc-sp-4{top:24%;left:54%;font-size:0.72rem;animation-delay:-0.8s;}
+@keyframes sparkTwinkle{0%,100%{transform:scale(1) rotate(0deg);opacity:0.65;}50%{transform:scale(1.35) rotate(18deg);opacity:1;}}
+/* plants */
+.pc-plant{position:absolute;bottom:0;pointer-events:none;}
+.pc-plant-l{left:0;}
+.pc-plant-r{right:0;transform:scaleX(-1);}
+/* card */
+#passCard{position:relative;background:#fff;border-radius:28px;padding:76px 36px 36px;text-align:center;box-shadow:0 24px 60px rgba(140,80,200,0.2),0 6px 20px rgba(160,100,220,0.1);max-width:340px;width:88%;margin-top:50px;}
+/* character peeking over card */
+.pc-character{position:absolute;top:-105px;left:50%;transform:translateX(-50%);pointer-events:none;z-index:10;}
+.pc-character svg{filter:drop-shadow(0 10px 26px rgba(140,80,200,0.26));}
+.pass-title{font-family:'DM Sans',sans-serif;font-size:1.65rem;font-weight:800;color:#2a1a3e;margin-bottom:5px;line-height:1.15;}
+.pass-sub{font-size:0.78rem;color:#8860aa;letter-spacing:.03em;margin-bottom:22px;}
+.pass-input-wrap{position:relative;margin-bottom:10px;}
+.pc-inp-icon{position:absolute;left:14px;top:50%;transform:translateY(-50%);pointer-events:none;opacity:0.55;}
+.pass-single{width:100%;padding:14px 18px 14px 44px;border-radius:14px;border:1.5px solid rgba(160,100,220,0.22);background:#f8f4ff;color:#2a1a3e;font-size:0.96rem;text-align:left;letter-spacing:.04em;outline:none;box-sizing:border-box;font-family:'DM Sans',sans-serif;transition:border-color .22s,box-shadow .22s;}
+.pass-single:focus{border-color:#9060cc;box-shadow:0 0 0 3.5px rgba(140,80,200,0.12);}
+.pass-single::placeholder{color:rgba(100,60,150,0.38);}
+.pass-err{font-size:0.73rem;color:#a01840;min-height:16px;margin-bottom:10px;transition:opacity .25s;}
 .pass-err.hidden{opacity:0;}
-.pass-btn{width:100%;padding:14px;border-radius:16px;border:none;background:linear-gradient(135deg,var(--lav) 0%,var(--lav2) 100%);color:#fff;font-size:0.95rem;font-weight:500;letter-spacing:.06em;cursor:pointer;transition:opacity .2s,transform .15s,box-shadow .2s;box-shadow:0 8px 24px rgba(122,64,176,0.36);}
-.pass-btn:hover{opacity:0.91;transform:translateY(-2px);box-shadow:0 14px 34px rgba(122,64,176,0.46);}
-.pass-btn:active{transform:translateY(0);box-shadow:0 5px 16px rgba(122,64,176,0.3);}
 @keyframes passShake{0%,100%{transform:translateX(0);}20%,60%{transform:translateX(-9px);}40%,80%{transform:translateX(9px);}}
 .pass-shake{animation:passShake 0.44s ease;}
-@keyframes passOut{to{opacity:0;transform:scale(0.97);pointer-events:none;}}
-#passOverlay.closing{animation:passOut 0.5s ease forwards;}
+@keyframes passOut{to{opacity:0;transform:scale(0.96) translateY(10px);pointer-events:none;}}
+#passOverlay.closing{animation:passOut 0.55s cubic-bezier(0.4,0,1,1) forwards;}
 /* swipe-to-unlock */
-.swipe-track{position:relative;height:54px;border-radius:27px;background:rgba(122,64,176,0.08);border:1.5px solid rgba(122,64,176,0.2);overflow:hidden;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;}
-.swipe-fill{position:absolute;top:0;left:0;bottom:0;width:0;background:linear-gradient(90deg,rgba(122,64,176,0.22),rgba(144,96,204,0.38));border-radius:27px;pointer-events:none;}
-.swipe-thumb{position:absolute;top:5px;left:5px;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--lav),var(--lav2));box-shadow:0 4px 14px rgba(122,64,176,0.42);display:flex;align-items:center;justify-content:center;color:#fff;z-index:2;cursor:grab;}
+.swipe-track{position:relative;height:52px;border-radius:26px;background:linear-gradient(90deg,#e060a0,#9060cc);border:none;overflow:hidden;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;box-shadow:0 8px 24px rgba(160,60,180,0.38);}
+.swipe-fill{position:absolute;top:0;left:0;bottom:0;width:0;background:rgba(255,255,255,0.15);border-radius:26px;pointer-events:none;}
+.swipe-thumb{position:absolute;top:4px;left:4px;width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.96);box-shadow:0 4px 12px rgba(0,0,0,0.15);display:flex;align-items:center;justify-content:center;color:#9060cc;z-index:2;cursor:grab;}
 .swipe-thumb:active{cursor:grabbing;}
 .swipe-thumb svg{pointer-events:none;}
-.swipe-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.76rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;pointer-events:none;z-index:1;}
+.swipe-label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:700;color:rgba(255,255,255,0.95);letter-spacing:.1em;text-transform:uppercase;pointer-events:none;z-index:1;}
 .swipe-track.sw-ok .swipe-fill{background:linear-gradient(90deg,#2da05c,#52c87e)!important;}
 .swipe-track.sw-ok .swipe-thumb{background:linear-gradient(135deg,#2da05c,#52c87e);box-shadow:0 4px 18px rgba(45,160,92,0.5);}
 .swipe-track.sw-no .swipe-thumb{background:linear-gradient(135deg,#b02050,#d84070);box-shadow:0 4px 14px rgba(176,32,80,0.45);}
 .swipe-track.sw-no .swipe-fill{background:linear-gradient(90deg,rgba(176,32,80,0.22),rgba(216,64,112,0.38))!important;}
 #passCard.glow-ok{animation:cardOkGlow 0.75s ease forwards;}
-@keyframes cardOkGlow{50%{box-shadow:0 0 0 5px rgba(45,160,92,0.4),0 28px 70px rgba(45,160,92,0.25),inset 0 1px 0 rgba(255,255,255,0.9);}100%{box-shadow:0 28px 70px rgba(100,40,180,0.13),0 4px 18px rgba(120,60,180,0.08),inset 0 1px 0 rgba(255,255,255,0.9);}}
+@keyframes cardOkGlow{50%{box-shadow:0 0 0 5px rgba(45,160,92,0.4),0 24px 60px rgba(45,160,92,0.22);}100%{box-shadow:0 24px 60px rgba(140,80,200,0.2),0 6px 20px rgba(160,100,220,0.1);}}
 /* ── swipe extra animations ── */
 .swipe-thumb{animation:thumbNudge 3.2s ease-in-out 2.2s infinite;}
-@keyframes thumbNudge{0%,55%,100%{transform:translateX(0);box-shadow:0 4px 14px rgba(122,64,176,0.42);}30%{transform:translateX(11px);box-shadow:0 6px 26px rgba(122,64,176,0.72);}}
+@keyframes thumbNudge{0%,55%,100%{transform:translateX(0);box-shadow:0 4px 12px rgba(0,0,0,0.15);}30%{transform:translateX(11px);box-shadow:0 6px 20px rgba(0,0,0,0.22);}}
 .swipe-label{animation:lblPulse 3.2s ease-in-out 2.2s infinite;}
 @keyframes lblPulse{0%,55%,100%{opacity:1;}30%{opacity:0.45;}}
 .swipe-track.sw-dragging .swipe-thumb,.swipe-track.sw-dragging .swipe-label{animation:none!important;}
@@ -1246,15 +1257,88 @@ nav{direction:ltr!important;}
 
 <!-- PASSKEY OVERLAY -->
 <div id="passOverlay">
-  <div class="pass-blob pass-blob-1"></div>
-  <div class="pass-blob pass-blob-2"></div>
-  <div class="pass-blob pass-blob-3"></div>
+  <!-- floating 3D icons -->
+  <div class="pc-float pc-float-profile">
+    <svg width="26" height="26" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="4" fill="white"/><path d="M5 20 Q5 15 12 15 Q19 15 19 20" stroke="white" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg>
+  </div>
+  <div class="pc-float pc-float-lock">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="5" y="11" width="14" height="10" rx="3" fill="white"/><path d="M8 11 V8 Q8 4 12 4 Q16 4 16 8 V11" stroke="white" stroke-width="2.4" stroke-linecap="round" fill="none"/></svg>
+  </div>
+  <div class="pc-float pc-float-check">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12 L10 17 L19 7" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+  <!-- sparkles -->
+  <div class="pc-sparkle pc-sp-1">✦</div>
+  <div class="pc-sparkle pc-sp-2">✦</div>
+  <div class="pc-sparkle pc-sp-3">✦</div>
+  <div class="pc-sparkle pc-sp-4">✦</div>
+  <!-- plants -->
+  <div class="pc-plant pc-plant-l">
+    <svg viewBox="0 0 80 200" width="80" height="200" fill="none">
+      <path d="M40 200 L40 90" stroke="#8ab060" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M40 155 Q22 135 10 142 Q24 126 40 135" fill="#7ab050"/>
+      <path d="M40 135 Q58 115 70 122 Q56 106 40 115" fill="#9acc70"/>
+      <path d="M40 115 Q20 95 12 104 Q26 88 40 97" fill="#7ab050"/>
+      <path d="M40 97 Q60 77 68 86 Q54 70 40 79" fill="#9acc70"/>
+      <ellipse cx="40" cy="198" rx="20" ry="6" fill="#c8a0e8" opacity="0.45"/>
+    </svg>
+  </div>
+  <div class="pc-plant pc-plant-r">
+    <svg viewBox="0 0 80 200" width="80" height="200" fill="none">
+      <path d="M40 200 L40 90" stroke="#8ab060" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M40 155 Q22 135 10 142 Q24 126 40 135" fill="#7ab050"/>
+      <path d="M40 135 Q58 115 70 122 Q56 106 40 115" fill="#9acc70"/>
+      <path d="M40 115 Q20 95 12 104 Q26 88 40 97" fill="#7ab050"/>
+      <path d="M40 97 Q60 77 68 86 Q54 70 40 79" fill="#9acc70"/>
+      <ellipse cx="40" cy="198" rx="20" ry="6" fill="#c8a0e8" opacity="0.45"/>
+    </svg>
+  </div>
+
   <div id="passCard">
-    <div class="pass-deco">🌸</div>
-    <div class="pass-title">Fatemeh</div>
-    <div class="pass-sub">Enter passkey to continue</div>
+    <!-- character peeking over card top -->
+    <div class="pc-character">
+      <svg viewBox="0 0 150 138" width="150" height="138" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="75" cy="72" rx="40" ry="46" fill="#150800"/>
+        <ellipse cx="75" cy="74" rx="32" ry="34" fill="#fac098"/>
+        <circle cx="75" cy="29" r="17" fill="#150800"/>
+        <ellipse cx="75" cy="36" rx="21" ry="9" fill="#150800"/>
+        <path d="M37 68 C28 90 30 114 34 120" stroke="#150800" stroke-width="13" stroke-linecap="round" fill="none"/>
+        <path d="M113 68 C122 90 120 114 116 120" stroke="#150800" stroke-width="13" stroke-linecap="round" fill="none"/>
+        <ellipse cx="43" cy="77" rx="6" ry="7" fill="#fac098"/>
+        <ellipse cx="107" cy="77" rx="6" ry="7" fill="#fac098"/>
+        <rect x="51" y="67" width="19" height="14" rx="5" fill="rgba(210,190,255,0.22)" stroke="#9494b8" stroke-width="2.2"/>
+        <rect x="79" y="67" width="19" height="14" rx="5" fill="rgba(210,190,255,0.22)" stroke="#9494b8" stroke-width="2.2"/>
+        <line x1="70" y1="74" x2="79" y2="74" stroke="#9494b8" stroke-width="1.5"/>
+        <line x1="51" y1="73" x2="46" y2="71" stroke="#9494b8" stroke-width="1.5"/>
+        <line x1="98" y1="73" x2="103" y2="71" stroke="#9494b8" stroke-width="1.5"/>
+        <ellipse cx="60.5" cy="74" rx="5" ry="5.2" fill="#2a1a0a"/>
+        <ellipse cx="89.5" cy="74" rx="5" ry="5.2" fill="#2a1a0a"/>
+        <circle cx="62" cy="72" r="1.8" fill="white"/>
+        <circle cx="91" cy="72" r="1.8" fill="white"/>
+        <path d="M54 64 Q61 61 68 63" stroke="#2a1a0a" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <path d="M81 63 Q88 61 95 64" stroke="#2a1a0a" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+        <path d="M72 81 Q75 84 78 81" stroke="#d8906a" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+        <circle cx="75" cy="64" r="2.5" fill="#cc3333"/>
+        <path d="M67 89 Q75 95 83 89" stroke="#c06040" stroke-width="2" stroke-linecap="round" fill="none"/>
+        <ellipse cx="50" cy="83" rx="9" ry="5" fill="rgba(255,138,118,0.38)"/>
+        <ellipse cx="100" cy="83" rx="9" ry="5" fill="rgba(255,138,118,0.38)"/>
+        <path d="M10 122 Q14 104 28 100 L53 96 Q60 108 75 108 Q90 108 97 96 L122 100 Q136 104 140 122" fill="#c8a0e8" stroke="#b890d8" stroke-width="1"/>
+        <path d="M63 96 Q75 105 87 96" fill="none" stroke="#b090d0" stroke-width="2"/>
+        <path d="M10 122 L10 134 Q10 138 15 138 L65 138" fill="#c8a0e8" stroke="#b890d8" stroke-width="1"/>
+        <path d="M140 122 L140 134 Q140 138 135 138 L85 138" fill="#c8a0e8" stroke="#b890d8" stroke-width="1"/>
+        <ellipse cx="58" cy="138" rx="13" ry="7" fill="#fac098" stroke="#e8b088" stroke-width="1"/>
+        <ellipse cx="93" cy="138" rx="13" ry="7" fill="#fac098" stroke="#e8b088" stroke-width="1"/>
+        <rect x="86" y="119" width="15" height="23" rx="3.5" fill="#7050b0"/>
+        <rect x="88" y="121" width="11" height="19" rx="2.5" fill="#a080d0" opacity="0.6"/>
+        <circle cx="93.5" cy="141" r="1.5" fill="#9070c0" opacity="0.7"/>
+      </svg>
+    </div>
+
+    <div class="pass-title">Welcome Back!</div>
+    <div class="pass-sub">Enter your passkey to continue</div>
     <div class="pass-input-wrap">
-      <input class="pass-single" id="passInput" type="password" placeholder="Your secret word…" autocomplete="off" spellcheck="false">
+      <svg class="pc-inp-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9060cc" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="3"/><path d="M8 11 V8 Q8 4 12 4 Q16 4 16 8 V11"/></svg>
+      <input class="pass-single" id="passInput" type="password" placeholder="Enter passkey…" autocomplete="off" spellcheck="false">
     </div>
     <div class="pass-err hidden" id="passErr">Incorrect passkey — try again</div>
     <div class="swipe-track" id="swipeTrack">
@@ -1262,7 +1346,7 @@ nav{direction:ltr!important;}
       <div class="swipe-thumb" id="swipeThumb">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
       </div>
-      <span class="swipe-label" id="swipeLabel">Slide to unlock</span>
+      <span class="swipe-label" id="swipeLabel">Login</span>
     </div>
     <div class="faceid-wrap" id="faceidWrap">
       <svg class="faceid-svg" width="84" height="84" viewBox="0 0 84 84" fill="none" xmlns="http://www.w3.org/2000/svg">
